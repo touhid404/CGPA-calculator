@@ -1,0 +1,1594 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+section {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+section h2 {
+    padding: 1.5rem;
+    margin: 0;
+    border-bottom: 2px solid #f1f1f1;
+    color: #2c3e50;
+}
+
+.retake-section {
+    border: 2px solid #ff9800;
+}
+
+.retake-section h2 {
+    color: #ff9800;
+}
+
+.grade-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.grade-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.grade-point {
+    width: 80px;
+    padding: 0.25rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+th, td {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.results {
+    background-color: #f8f9fa;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Add these new styles for the modal */
+.chart-button {
+    display: block;
+    margin: 0 auto 2rem;
+    background-color: #4CAF50;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.chart-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76,175,80,0.2);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.grade-chart-table {
+    width: 100%;
+    margin: 1rem 0;
+    border-collapse: collapse;
+}
+
+.grade-chart-table th,
+.grade-chart-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.grade-chart-table th {
+    font-weight: bold;
+    border-bottom: 2px solid #333;
+}
+
+.close-button {
+    display: block;
+    margin: 1rem auto 0;
+    padding: 0.5rem 2rem;
+    background-color: #007bff;
+}
+
+/* Updated and new styles */
+.add-button {
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.retake-button {
+    background-color: #ff9800;
+}
+
+.retake-button:hover {
+    background-color: #f57c00;
+}
+
+.plus-icon {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Results section styling */
+.result-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.result-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.result-card h3 {
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.result-card .value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Input styling */
+input[type="text"],
+input[type="number"],
+select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+select {
+    background-color: white;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .container {
+        margin: 0;
+        padding: 1rem;
+        border-radius: 0;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 0.5rem 0.25rem;
+    }
+
+    .result-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    /* Stack form elements on mobile */
+    td {
+        min-width: 100px;
+    }
+
+    td:last-child {
+        min-width: 70px;
+    }
+
+    .remove-button {
+        padding: 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    /* Adjust button sizes for mobile */
+    .add-button {
+        width: 100%;
+        margin: 1rem 0;
+        justify-content: center;
+    }
+
+    /* Make dropdowns more touch-friendly */
+    select {
+        padding: 0.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Additional general styles */
+.table-responsive {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Style for course select */
+.course-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+
+/* Add to your existing styles */
+:root {
+    /* Light theme colors */
+    --primary-color: #7c3aed;    /* Purple */
+    --secondary-color: #14b8a6;   /* Teal */
+    --danger-color: #ef4444;      /* Red */
+    --success-color: #22c55e;     /* Green */
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --text-primary: #2b2d42;
+    --text-secondary: #6c757d;
+    --border-color: #eee;
+    --input-background: #f5f5f5;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    /* Dark theme colors */
+    --primary-color: #a78bfa;     /* Light Purple */
+    --secondary-color: #2dd4bf;   /* Light Teal */
+    --danger-color: #f87171;      /* Light Red */
+    --success-color: #4ade80;     /* Light Green */
+    --background-color: #1a1b1e;
+    --card-background: #2a2b2e;
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+    --border-color: #3f3f46;
+    --input-background: #3f3f46;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.app-container {
+    max-width: 600px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--background-color);
+    color: var(--text-primary);
+}
+
+/* Header Styles */
+.app-header {
+    background: var(--card-background);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.title i {
+    font-size: 1.6rem;  /* Match the size of header action icons */
+    opacity: 0.9;
+    margin-top: 2px;  /* Fine-tune vertical alignment */
+}
+
+.title h1 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1;  /* Ensure text is centered */
+    padding-top: 4px;  /* Fine-tune vertical alignment */
+}
+
+/* Info Cards */
+.info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.info-card {
+    background: transparent;
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+    background: transparent !important;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    transition: none;
+}
+
+.card-content i {
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    opacity: 0.7;
+    margin-right: 0.75rem;
+}
+
+.input-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.input-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.card-content input {
+    background: transparent !important;
+    border: none;
+    outline: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    width: 100%;
+    color: var(--text-primary);
+    padding: 0;
+    transition: none;
+}
+
+.card-content input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+/* Update select wrapper and options styles */
+.select-wrapper {
+    position: relative;
+    text-align: center;
+    background: transparent !important;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.select-wrapper i {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.select-wrapper select {
+    width: 100%;
+    text-align: center;
+    text-align-last: center;
+    padding: 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: transparent !important;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    color: var(--text-primary);
+}
+
+/* Style for options */
+.select-wrapper select option {
+    text-align: center;
+    padding: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: var(--card-background) !important;
+}
+
+/* Remove custom arrow */
+.select-wrapper::after {
+    display: none;
+}
+
+/* Hover effects */
+.select-wrapper:hover {
+    border-color: var(--primary-color);
+}
+
+.select-wrapper:hover i {
+    opacity: 1;
+    color: var(--primary-color);
+}
+
+/* Grade colors */
+.grade option[value="A"] { color: #22c55e; }
+.grade option[value="A-"] { color: #16a34a; }
+.grade option[value="B+"] { color: #2563eb; }
+.grade option[value="B"] { color: #3b82f6; }
+.grade option[value="B-"] { color: #60a5fa; }
+.grade option[value="C+"] { color: #f59e0b; }
+.grade option[value="C"] { color: #d97706; }
+
+/* Credit colors */
+.credit-hours option[value="1"] { color: #8b5cf6; }
+.credit-hours option[value="2"] { color: #7c3aed; }
+.credit-hours option[value="3"] { color: #6d28d9; }
+.credit-hours option[value="4"] { color: #5b21b6; }
+
+/* Placeholder style */
+.select-wrapper select option[value=""][disabled] {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .select-wrapper:hover {
+    background: transparent !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    .info-cards {
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .card-content {
+        padding: 0.75rem;
+    }
+
+    .card-content input {
+        font-size: 1rem;
+    }
+
+    .select-wrapper {
+        padding: 0.4rem;
+    }
+    
+    .select-wrapper select {
+        font-size: 0.9rem;
+    }
+}
+
+/* Course Cards */
+.courses-section {
+    padding: 1rem;
+    padding-bottom: 80px; /* Space for floating buttons */
+}
+
+.course-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.course-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.delete-button {
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--danger-color);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.delete-button i {
+    font-size: 1.2rem;
+}
+
+.delete-button:hover {
+    opacity: 1;
+    background: transparent;
+}
+
+/* Dark mode adjustments for delete button */
+[data-theme="dark"] .delete-button {
+    color: var(--danger-color);
+}
+
+[data-theme="dark"] .delete-button:hover {
+    background: transparent;
+}
+
+/* Input field styles */
+.input-field {
+    margin-bottom: 0.5rem;
+}
+
+.input-field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    opacity: 0.8;
+}
+
+.select-wrapper {
+    background: transparent;
+    border: 1px solid var(--border-color);
+}
+
+.select-wrapper:hover {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(139, 92, 246, 0.05));
+}
+
+.select-wrapper:focus-within {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+}
+
+.select-wrapper select {
+    background: transparent;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    width: 100%;
+    color: var(--text-primary);
+}
+
+.select-wrapper select option {
+    background: var(--card-background);
+    color: var(--text-primary);
+}
+
+/* Floating Action Buttons */
+.floating-buttons {
+    position: fixed;
+    bottom: 80px;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 90;
+}
+
+.fab {
+    min-width: 120px;
+    height: 48px;
+    border-radius: 24px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0 1.5rem;
+    animation: fadeInUp 0.3s ease-out;
+    backdrop-filter: blur(8px);
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+.fab.primary {
+    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.fab.secondary {
+    background: linear-gradient(135deg, #14b8a6, #2dd4bf);
+    box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+}
+
+.fab-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fab-content span {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Bottom Actions */
+.bottom-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.75rem;  /* Reduced padding */
+    background: var(--card-background);
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 0.75rem;  /* Reduced gap */
+    z-index: 80;
+}
+
+.action-button {
+    flex: 1;
+    padding: 0.75rem;  /* Reduced padding */
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;  /* Smaller font size */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-button:active {
+    transform: scale(0.98);
+}
+
+.calculate {
+    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
+}
+
+.reset {
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+/* Retake Card Styles */
+.retake-card {
+    border: 2px solid #14b8a6;
+}
+
+.retake-card .course-header h3 {
+    color: #14b8a6;
+}
+
+.retake-card .select-wrapper:focus-within {
+    box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .course-inputs {
+        grid-template-columns: 1fr;
+    }
+
+    .fab {
+        min-width: 100px;
+        height: 40px;
+        font-size: 0.85rem;
+    }
+
+    .result-item {
+        padding: 1rem;
+    }
+
+    .result-value {
+        font-size: 1.5rem;
+    }
+
+    .grade-chart-table th,
+    .grade-chart-table td {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .courses-section {
+        padding: 0.75rem;
+        padding-bottom: 80px;
+    }
+
+    .course-card {
+        margin-bottom: 0.5rem;
+    }
+
+    .course-inputs {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .retake-card .course-inputs {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .input-field {
+        margin-bottom: 0;
+    }
+
+    .select-wrapper select {
+        padding: 0.25rem 0;
+    }
+
+    .bottom-actions {
+        padding: 0.6rem;  /* Even smaller on mobile */
+    }
+
+    .action-button {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Modal styles */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--background-color);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.close-modal {
+    color: var(--text-secondary);
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close-modal:hover {
+    background-color: var(--background-color);
+}
+
+/* Results modal styles */
+.results-modal {
+    max-width: 400px;
+}
+
+.results-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.result-item {
+    background: var(--background-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+    animation: scaleIn 0.3s ease-out;
+    animation-fill-mode: both;
+}
+
+.result-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.label-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.label-text h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.label-text p {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.8;
+    color: var(--text-secondary);
+}
+
+.result-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+/* Grade chart modal styles */
+.grade-chart-modal {
+    max-width: 450px;
+}
+
+.grade-chart-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.grade-chart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.grade-chart-table th,
+.grade-chart-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--background-color);
+}
+
+.grade-chart-table th {
+    background-color: var(--background-color);
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.grade-chart-table td {
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.grade-chart-table tr:hover td {
+    background-color: var(--background-color);
+}
+
+/* Toast styles */
+.toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 1000;
+    animation: slideUpFade 0.4s ease-out;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.toast.error {
+    background-color: #fef2f2;
+    color: #ef4444;
+    border-left: 4px solid #ef4444;
+}
+
+.toast i {
+    color: var(--danger-color);
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 30px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* Input focus styles */
+input:focus, select:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+}
+
+.error input, .error select {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+/* Update validation modal styles */
+.validation-modal {
+    max-width: 350px;
+}
+
+.validation-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.validation-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.validation-icon i {
+    font-size: 32px;
+}
+
+.validation-message {
+    text-align: center;
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .course-inputs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .input-field {
+        margin-bottom: 0;
+    }
+}
+
+/* Update course inputs grid */
+.course-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    padding: 1rem;
+    background: transparent !important;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.input-field {
+    margin: 0;
+}
+
+.input-field label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.4rem;
+}
+
+/* Update retake card specific styles */
+.retake-card .course-inputs {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Add subtle text shadow for better contrast */
+.title h1,
+.course-header h3,
+.result-value,
+.modal-header h2 {
+    text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+/* Make icons more visible */
+.material-icons {
+    font-size: 1.3rem;
+    opacity: 0.9;
+}
+
+/* Update select placeholder color */
+select option[value=""][disabled] {
+    color: #999;
+}
+
+/* Add animation for course cards */
+.course-card {
+    animation: slideIn 0.3s ease-out;
+    transform-origin: top;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Update floating action buttons */
+.fab {
+    animation: fadeInUp 0.3s ease-out;
+    backdrop-filter: blur(8px);
+}
+
+.fab:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05) contrast(1.1);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Update action buttons */
+.action-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05) contrast(1.1);
+}
+
+/* Modal animations */
+.modal {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Result items animation */
+.result-item:nth-child(1) { animation-delay: 0.1s; }
+.result-item:nth-child(2) { animation-delay: 0.2s; }
+.result-item:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Delete button animation */
+.delete-button {
+    color: var(--danger-color);
+    transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    transform: scale(1.1);
+}
+
+/* Input field animations */
+.select-wrapper {
+    transition: all 0.2s ease;
+}
+
+.select-wrapper:hover {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(139, 92, 246, 0.05));
+}
+
+.select-wrapper:focus-within {
+    background: white;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+}
+
+/* Info cards animation */
+.info-card {
+    animation: pulseIn 0.3s ease-out;
+}
+
+@keyframes pulseIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    70% {
+        transform: scale(1.03);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Grade chart table animation */
+.grade-chart-table tr {
+    animation: fadeInLeft 0.3s ease-out;
+    animation-fill-mode: both;
+}
+
+.grade-chart-table tr:nth-child(odd) { animation-delay: 0.1s; }
+.grade-chart-table tr:nth-child(even) { animation-delay: 0.2s; }
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Add button active states */
+.fab:active, .action-button:active {
+    transform: translateY(1px);
+    filter: brightness(0.95);
+}
+
+/* Update existing styles to use new variables */
+.app-container {
+    background: var(--background-color);
+    color: var(--text-primary);
+}
+
+.course-card {
+    background: var(--card-background);
+    border-color: var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.select-wrapper {
+    background: var(--input-background);
+    color: var(--text-primary);
+}
+
+.select-wrapper select {
+    color: var(--text-primary);
+}
+
+/* Update modal background for dark mode */
+.modal {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .modal-content {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+}
+
+/* Update input styles for dark mode */
+[data-theme="dark"] input,
+[data-theme="dark"] select {
+    background-color: var(--input-background);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: rotate(30deg);
+}
+
+/* Course card adjustments */
+.course-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.course-inputs {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0.75rem;
+}
+
+.retake-card .course-inputs {
+    border-color: #14b8a6;
+}
+
+/* Input icons */
+.card-content i,
+.select-wrapper i {
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.card-content:focus-within i,
+.select-wrapper:focus-within i {
+    opacity: 1;
+    color: #7c3aed;
+}
+
+/* Hover effects */
+.card-content:hover,
+.select-wrapper:hover {
+    border-color: #7c3aed;
+}
+
+.card-content:hover i,
+.select-wrapper:hover i {
+    opacity: 0.8;
+}
+
+/* Dark mode specific adjustments */
+[data-theme="dark"] .select-wrapper {
+    background: transparent;
+}
+
+[data-theme="dark"] .select-wrapper:hover,
+[data-theme="dark"] .select-wrapper:focus-within {
+    background: transparent !important;
+}
+
+[data-theme="dark"] .card-content {
+    background: transparent !important;
+}
+
+[data-theme="dark"] .card-content:focus-within {
+    background: transparent !important;
+}
+
+[data-theme="dark"] .card-content input {
+    color: var(--text-primary);
+}
+
+/* Update header action buttons */
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.icon-button {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icon-button i {
+    font-size: 1.6rem;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+}
+
+.icon-button:hover i {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.icon-button:active i {
+    transform: scale(0.95);
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .icon-button {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .icon-button:hover {
+    background: transparent;
+}
+
+/* Style for credit options */
+.credit-hours option {
+    padding: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Credit value colors */
+.credit-hours option[value="1"] { color: #8b5cf6; }  /* Light Purple */
+.credit-hours option[value="2"] { color: #7c3aed; }  /* Medium Purple */
+.credit-hours option[value="3"] { color: #6d28d9; }  /* Dark Purple */
+.credit-hours option[value="4"] { color: #5b21b6; }  /* Deeper Purple */
+
+/* Dark mode credit colors */
+[data-theme="dark"] .credit-hours option[value="1"] { color: #a78bfa; }
+[data-theme="dark"] .credit-hours option[value="2"] { color: #9333ea; }
+[data-theme="dark"] .credit-hours option[value="3"] { color: #7c3aed; }
+[data-theme="dark"] .credit-hours option[value="4"] { color: #6d28d9; }
+
+/* Remove the pulse animation and simplify select styles */
+.select-wrapper {
+    position: relative;
+    text-align: center;
+    background: transparent !important;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.select-wrapper select {
+    width: 100%;
+    text-align: center;
+    text-align-last: center;
+    padding: 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: transparent !important;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    color: var(--text-primary);
+}
+
+/* Style for options */
+.select-wrapper select option {
+    text-align: center;
+    padding: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: var(--card-background) !important;
+}
+
+/* Remove animations */
+.select-wrapper select:focus {
+    animation: none;  /* Remove pulse animation */
+}
+
+/* Remove the gradient animation */
+.select-wrapper::before {
+    display: none;  /* Remove gradient effect */
+}
+
+/* Keep simple hover effect */
+.select-wrapper:hover {
+    border-color: var(--primary-color);
+}
+
+/* Remove all animations and transitions */
+.select-wrapper,
+.select-wrapper select,
+.select-wrapper select option {
+    transition: none;
+    animation: none;
+    transform: none;
+}
+
+/* Remove any transform effects */
+.select-wrapper:active,
+.select-wrapper:focus,
+.select-wrapper select:active,
+.select-wrapper select:focus {
+    transform: none;
+}
+
+/* Remove any transition delays */
+.credit-hours option,
+.grade option {
+    transition: none;
+}
+
+/* Developer modal styles */
+.developer-modal {
+    max-width: 400px;
+}
+
+.developer-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem 0;
+    gap: 1rem;
+}
+
+.developer-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.developer-icon i {
+    font-size: 32px;
+}
+
+.developer-body h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.version {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.developer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.developer-info p {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: var(--background-color);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.social-links a:hover {
+    transform: translateY(-2px);
+} 

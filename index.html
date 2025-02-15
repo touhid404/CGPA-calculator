@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="title">
+                <i class="material-icons">school</i>
+                <h1>CGPA Calculator</h1>
+            </div>
+            <div class="header-actions">
+                <button class="icon-button" onclick="calculator.showGradeChart()">
+                    <i class="material-icons">bar_chart</i>
+                </button>
+                <button class="icon-button" onclick="calculator.showDeveloperInfo()">
+                    <i class="material-icons">info</i>
+                </button>
+                <button class="icon-button" id="themeToggle">
+                    <i class="material-icons theme-toggle">dark_mode</i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Previous Results Cards -->
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="card-content">
+                        <i class="material-icons">credit_card</i>
+                        <div class="input-wrapper">
+                            <span class="input-label">Completed Credits</span>
+                            <input type="number" id="completedCredits" placeholder="Enter credits" min="0" step="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="card-content">
+                        <i class="material-icons">school</i>
+                        <div class="input-wrapper">
+                            <span class="input-label">Current CGPA</span>
+                            <input type="number" id="currentCGPA" placeholder="Enter CGPA" min="0" max="4" step="0.01">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses List -->
+            <div class="courses-section">
+                <div id="coursesList"></div>
+                
+                <!-- Action Buttons -->
+                <div class="floating-buttons">
+                    <button id="addRetake" class="fab secondary">
+                        <div class="fab-content">
+                            <i class="material-icons">sync</i>
+                            <span>Retake</span>
+                        </div>
+                    </button>
+                    <button id="addCourse" class="fab primary">
+                        <div class="fab-content">
+                            <i class="material-icons">add</i>
+                            <span>Course</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Calculate Button -->
+            <div class="bottom-actions">
+                <button id="calculateButton" class="action-button calculate">
+                    Calculate CGPA
+                </button>
+                <button id="resetButton" class="action-button reset">
+                    Reset
+                </button>
+            </div>
+        </main>
+
+        <!-- Modals -->
+        <div id="resultsModal" class="modal">
+            <div class="modal-content results-modal">
+                <div class="modal-header">
+                    <h2>Results Summary</h2>
+                    <button class="icon-button close-modal">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div class="results-body">
+                    <div class="result-item">
+                        <div class="result-label">
+                            <i class="material-icons">trending_up</i>
+                            <div class="label-text">
+                                <h3>Current GPA</h3>
+                                <p>New courses only</p>
+                            </div>
+                        </div>
+                        <div class="result-value" id="currentGPA">0.00</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <i class="material-icons">school</i>
+                            <div class="label-text">
+                                <h3>Final CGPA</h3>
+                                <p>Including previous CGPA</p>
+                            </div>
+                        </div>
+                        <div class="result-value" id="cgpa">0.00</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <i class="material-icons">credit_card</i>
+                            <div class="label-text">
+                                <h3>Total Credits</h3>
+                                <p>All completed credits</p>
+                            </div>
+                        </div>
+                        <div class="result-value" id="totalCredits">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gradeChartModal" class="modal">
+            <div class="modal-content grade-chart-modal">
+                <div class="modal-header">
+                    <h2>Grade Chart</h2>
+                    <button class="icon-button close-modal">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div class="grade-chart-content">
+                    <table class="grade-chart-table">
+                        <thead>
+                            <tr>
+                                <th>Grade</th>
+                                <th>Points</th>
+                                <th>Range</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>A</td><td>4.00</td><td>90 - 100</td></tr>
+                            <tr><td>A-</td><td>3.67</td><td>86 - 89</td></tr>
+                            <tr><td>B+</td><td>3.33</td><td>82 - 85</td></tr>
+                            <tr><td>B</td><td>3.00</td><td>78 - 81</td></tr>
+                            <tr><td>B-</td><td>2.67</td><td>74 - 77</td></tr>
+                            <tr><td>C+</td><td>2.33</td><td>70 - 73</td></tr>
+                            <tr><td>C</td><td>2.00</td><td>66 - 69</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update the validation modal -->
+        <div id="validationModal" class="modal">
+            <div class="modal-content validation-modal">
+                <div class="modal-header">
+                    <h2>Required Information</h2>
+                    <button class="icon-button close-modal">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div class="validation-body">
+                    <div class="validation-icon">
+                        <i class="material-icons">info</i>
+                    </div>
+                    <p class="validation-message">Please enter your completed credits and current CGPA first.</p>
+                    <button class="action-button calculate" onclick="calculator.closeValidationModal()">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add new developer info modal -->
+        <div id="developerModal" class="modal">
+            <div class="modal-content developer-modal">
+                <div class="modal-header">
+                    <h2>Developer Info</h2>
+                    <button class="icon-button close-modal">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div class="developer-body">
+                    <div class="developer-icon">
+                        <i class="material-icons">code</i>
+                    </div>
+                    <h3>CGPA Calculator</h3>
+                    <p class="version">Version 1.0.0</p>
+                    <div class="developer-info">
+                        <p>Developed by: Touhidul Islam</p>
+                        <p>Contact: touhid435r@gmail.com</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://github.com/Riyadh435" target="_blank">
+                            <i class="material-icons">link</i>
+                            GitHub
+                        </a>
+                        <a href="https://www.linkedin.com/in/riyadh-touhid" target="_blank">
+                            <i class="material-icons">link</i>
+                            LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
