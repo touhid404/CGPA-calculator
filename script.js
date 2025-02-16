@@ -22,6 +22,8 @@ class CGPACalculator {
         this.initializeUI();
         this.initializeModalCloseButtons();
         this.initializeTheme();
+        this.courseRegistry = new Map(); // Tracks latest course attempts
+        this.initializeFAB();
     }
 
     initializeUI() {
@@ -307,66 +309,49 @@ class CGPACalculator {
         const previousCGPA = parseFloat(this.currentCGPA.value) || 0;
         const previousPoints = previousCredits * previousCGPA;
 
-        let newPoints = 0;
-        let newCredits = 0;
-        const courses = new Map(); // To track best grades for each course
+        let currentPoints = 0;       // For current GPA calculation
+        let cgpaPoints = 0;          // For final CGPA calculation
+        let gpaCredits = 0;          // Credits affecting current GPA
+        let totalCredits = previousCredits; // Total completed credits
 
-        // Calculate points from regular courses
-        document.querySelectorAll('.course-card:not(.retake-card)').forEach(card => {
+        document.querySelectorAll('.course-card').forEach(card => {
             const creditHours = parseFloat(card.querySelector('.credit-hours').value) || 0;
-            const grade = card.querySelector('.grade').value;
-            const points = this.gradeChart[grade] * creditHours;
-            
-            courses.set(`Course ${courses.size + 1}`, {
-                creditHours,
-                points,
-                gradePoints: this.gradeChart[grade]
-            });
-        });
+            const isRetake = card.classList.contains('retake-card');
 
-        // Handle retake courses
-        document.querySelectorAll('.retake-card').forEach(card => {
-            const creditHours = parseFloat(card.querySelector('.credit-hours').value) || 0;
-            const previousGrade = card.querySelector('.previous-grade').value;
-            const newGrade = card.querySelector('.new-grade').value;
-            
-            const previousPoints = this.gradeChart[previousGrade] * creditHours;
-            const newPoints = this.gradeChart[newGrade] * creditHours;
-            
-            // Only count the better grade
-            if (newPoints > previousPoints) {
-                courses.set(`Retake Course ${courses.size + 1}`, {
-                    creditHours,
-                    points: newPoints,
-                    gradePoints: this.gradeChart[newGrade]
-                });
+            if (isRetake) {
+                const previousGrade = card.querySelector('.previous-grade').value;
+                const newGrade = card.querySelector('.new-grade').value;
+                
+                // For current GPA: use full new grade
+                const newGradePoints = this.gradeChart[newGrade] * creditHours;
+                currentPoints += newGradePoints;
+                
+                // For final CGPA: only grade improvement
+                const gradeDiff = this.gradeChart[newGrade] - this.gradeChart[previousGrade];
+                cgpaPoints += gradeDiff * creditHours;
+                
+                gpaCredits += creditHours;
             } else {
-                courses.set(`Retake Course ${courses.size + 1}`, {
-                    creditHours,
-                    points: previousPoints,
-                    gradePoints: this.gradeChart[previousGrade]
-                });
+                const grade = card.querySelector('.grade').value;
+                const gradePoints = this.gradeChart[grade] * creditHours;
+                
+                currentPoints += gradePoints;
+                cgpaPoints += gradePoints;
+                gpaCredits += creditHours;
+                totalCredits += creditHours;
             }
         });
 
-        // Calculate totals
-        let currentPoints = 0;
-        let currentCredits = 0;
-        courses.forEach(course => {
-            currentPoints += course.points;
-            currentCredits += course.creditHours;
-        });
-
         // Calculate GPAs
-        const currentGPA = currentCredits > 0 ? (currentPoints / currentCredits).toFixed(2) : "0.00";
-        const totalCredits = previousCredits + currentCredits;
-        const totalPoints = previousPoints + currentPoints;
+        const totalPoints = previousPoints + cgpaPoints;
+        const currentGPA = gpaCredits > 0 ? (currentPoints / gpaCredits).toFixed(2) : "0.00";
         const finalCGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
 
         // Update display
         document.getElementById('currentGPA').textContent = currentGPA;
         document.getElementById('cgpa').textContent = finalCGPA;
         document.getElementById('totalCredits').textContent = totalCredits;
+        document.getElementById('gpaCredits').textContent = gpaCredits;
         this.resultsModal.classList.add('show');
         
         // Animate values
@@ -411,6 +396,48 @@ class CGPACalculator {
         document.getElementById('currentGPA').textContent = '0.00';
         document.getElementById('cgpa').textContent = '0.00';
         document.getElementById('totalCredits').textContent = '0';
+        document.getElementById('gpaCredits').textContent = '0';
+    }
+
+    addCourse(courseElement) {
+        const courseName = courseElement.dataset.courseName;
+        const isRetake = courseElement.classList.contains('retake');
+        
+        // Store only the latest attempt for each course
+        this.courseRegistry.set(courseName, {
+            credit: parseFloat(courseElement.querySelector('.credit-hours').value),
+            grade: courseElement.querySelector('.grade').value,
+            isRetake
+        });
+    }
+
+    calculateCGPA() {
+        let totalPoints = 0;
+        let totalCredits = 0;
+
+        this.courseRegistry.forEach(course => {
+            const gradePoint = this.gradeChart[course.grade];
+            totalPoints += gradePoint * course.credit;
+            totalCredits += course.credit;
+        });
+
+        return totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
+    }
+
+    initializeFAB() {
+        const mainFab = document.getElementById('mainFab');
+        const fabActions = document.querySelector('.fab-actions');
+        
+        mainFab.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fabActions.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!mainFab.contains(e.target) && !fabActions.contains(e.target)) {
+                fabActions.classList.remove('active');
+            }
+        });
     }
 }
 

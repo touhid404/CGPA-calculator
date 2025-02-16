@@ -55,32 +55,6 @@
             <!-- Courses List -->
             <div class="courses-section">
                 <div id="coursesList"></div>
-                
-                <!-- Action Buttons -->
-                <div class="floating-buttons">
-                    <button id="addRetake" class="fab secondary">
-                        <div class="fab-content">
-                            <i class="material-icons">sync</i>
-                            <span>Retake</span>
-                        </div>
-                    </button>
-                    <button id="addCourse" class="fab primary">
-                        <div class="fab-content">
-                            <i class="material-icons">add</i>
-                            <span>Course</span>
-                        </div>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Calculate Button -->
-            <div class="bottom-actions">
-                <button id="calculateButton" class="action-button calculate">
-                    Calculate CGPA
-                </button>
-                <button id="resetButton" class="action-button reset">
-                    Reset
-                </button>
             </div>
         </main>
 
@@ -123,6 +97,16 @@
                             </div>
                         </div>
                         <div class="result-value" id="totalCredits">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <i class="material-icons">gavel</i>
+                            <div class="label-text">
+                                <h3>GPA Credits</h3>
+                                <p>Credits counting towards GPA</p>
+                            </div>
+                        </div>
+                        <div class="result-value" id="gpaCredits">0</div>
                     </div>
                 </div>
             </div>
@@ -212,6 +196,36 @@
                 </div>
             </div>
         </div>
+
+        <!-- Footer Section -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-actions">
+                    <button id="resetButton" class="action-button reset">Reset</button>
+                    <button id="calculateButton" class="action-button calculate">Calculate CGPA</button>
+                    <button class="action-button menu" id="mainFab">
+                        <span>Menu</span>
+                    </button>
+                </div>
+                
+                <div class="fab-actions">
+                    <button class="action-button secondary" id="addRetake">
+                        <i class="material-icons">sync</i>
+                        <div class="button-text">
+                            <span>Retake</span>
+                            <small>Improve existing grade</small>
+                        </div>
+                    </button>
+                    <button class="action-button primary" id="addCourse">
+                        <i class="material-icons">add</i>
+                        <div class="button-text">
+                            <span>Course</span>
+                            <small>New course entry</small>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </footer>
     </div>
     <script src="script.js"></script>
 </body>
