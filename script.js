@@ -23,6 +23,7 @@ class CGPACalculator {
 
         this.validationModal = document.getElementById('validationModal');
         this.developerModal = document.getElementById('developerModal');
+        this.FeeCalModal = document.getElementById('FeeCalModal');
         this.initializeUI();
         this.initializeModalCloseButtons();
         this.initializeTheme();
@@ -371,6 +372,9 @@ class CGPACalculator {
     showDeveloperInfo() {
         this.developerModal.classList.add('show');
     }
+    showFeeCalInfo() {
+        this.FeeCalModal.classList.add('show');
+    }
 
     animateValue(elementId, final) {
         const element = document.getElementById(elementId);
@@ -449,3 +453,36 @@ class CGPACalculator {
 document.addEventListener('DOMContentLoaded', () => {
     window.calculator = new CGPACalculator();
 }); 
+
+
+
+
+function calculateTutionFee() {
+    let tuitionFee = parseFloat(document.getElementById("tuitionFee").value);
+    let waiverPercentage = parseFloat(document.getElementById("waiverOrscholarship").value);
+    let trimesterFee = 5000; // Fixed trimester fee
+
+    if (isNaN(tuitionFee) || tuitionFee <= trimesterFee) {
+        alert("Please enter a valid tuition fee (must be greater than 5000 tk).");
+        return;
+    }
+
+    // Step 1: Deduct trimester fee (no waiver on this)
+    let remainingAmount = tuitionFee - trimesterFee;
+   
+
+    // Step 2: Apply the selected waiver on the remaining amount
+    let waiverAmount = (remainingAmount * waiverPercentage) / 100;
+    let finalPayableFee = remainingAmount - waiverAmount + trimesterFee; // Adding trimester fee back
+
+    document.getElementById("payableFee").innerText = `Total Payable Fee after ${waiverPercentage}% Waiver: ${finalPayableFee.toFixed(2)} tk`;
+
+    // Step 3: Calculate installments (40%, 30%, 30% of the final payable fee)
+    let installment1 = (finalPayableFee * 40) / 100;
+    let installment2 = (finalPayableFee * 30) / 100;
+    let installment3 = (finalPayableFee * 30) / 100;
+
+    document.getElementById("installment1").innerText = `1st Installment (40%): ${installment1.toFixed(2)} tk`;
+    document.getElementById("installment2").innerText = `2nd Installment (30%): ৳${installment2.toFixed(2)} tk`;
+    document.getElementById("installment3").innerText = `3rd Installment (30%): ৳${installment3.toFixed(2)} tk`;
+}

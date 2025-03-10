@@ -744,6 +744,50 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+
+
+
+
+/* Calculate fee */
+.fee-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 10px;
+    
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tuitionFee{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.waiverOrscholarship{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.result {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Mobile adaptation */
 @media (max-width: 600px) {
     .fab-actions {
