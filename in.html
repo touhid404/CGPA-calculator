@@ -4,2005 +4,2050 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CGPA Calculator | Touhid's Project</title>
-    
+
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
 
-
     <style>
-        * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.container {
-    max-width: 1000px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-h1 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 2rem;
-}
-
-h2 {
-    margin-bottom: 1rem;
-    color: #333;
-}
-
-section {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    margin-bottom: 2rem;
-}
-
-section h2 {
-    padding: 1.5rem;
-    margin: 0;
-    border-bottom: 2px solid #f1f1f1;
-    color: #2c3e50;
-}
-
-.retake-section {
-    border: 2px solid #ff9800;
-}
-
-.retake-section h2 {
-    color: #ff9800;
-}
-
-.grade-inputs {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-}
-
-.grade-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.grade-point {
-    width: 80px;
-    padding: 0.25rem;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0;
-}
-
-th, td {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-}
-
-button {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-.results {
-    background-color: #f8f9fa;
-}
-
-.result-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem;
-    border-bottom: 1px solid #ddd;
-}
-
-/* Add these new styles for the modal */
-.chart-button {
-    display: block;
-    margin: 0 auto 2rem;
-    background-color: #4CAF50;
-    font-size: 1rem;
-    padding: 0.75rem 1.5rem;
-    transition: all 0.3s ease;
-}
-
-.chart-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(76,175,80,0.2);
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.modal-content {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    transform: translateY(20px);
-    transition: transform 0.3s ease;
-}
-
-.modal.show {
-    display: flex;
-    opacity: 1;
-}
-
-.modal.show .modal-content {
-    transform: translateY(0);
-}
-
-.grade-chart-table {
-    width: 100%;
-    margin: 1rem 0;
-    border-collapse: collapse;
-}
-
-.grade-chart-table th,
-.grade-chart-table td {
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.grade-chart-table th {
-    font-weight: bold;
-    border-bottom: 2px solid #333;
-}
-
-.close-button {
-    display: block;
-    margin: 1rem auto 0;
-    padding: 0.5rem 2rem;
-    background-color: #007bff;
-}
-
-/* Updated and new styles */
-.add-button {
-    margin: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    padding: 0.75rem 1.5rem;
-}
-
-.retake-button {
-    background-color: #ff9800;
-}
-
-.retake-button:hover {
-    background-color: #f57c00;
-}
-
-.plus-icon {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-/* Results section styling */
-.result-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    padding: 1.5rem;
-}
-
-.result-card {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.result-card h3 {
-    color: #666;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-}
-
-.result-card .value {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-/* Input styling */
-input[type="text"],
-input[type="number"],
-select {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 100%;
-}
-
-select {
-    background-color: white;
-}
-
-/* Mobile responsiveness */
-@media screen and (max-width: 768px) {
-    .container {
+      * {
         margin: 0;
-        padding: 1rem;
-        border-radius: 0;
-    }
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
 
-    .table-responsive {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        margin: 0 -1rem;
-        padding: 0 1rem;
-    }
+      .container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-    table {
-        font-size: 0.9rem;
-    }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+      }
 
-    th, td {
-        padding: 0.5rem 0.25rem;
-    }
+      h2 {
+        margin-bottom: 1rem;
+        color: #333;
+      }
 
-    .result-cards {
-        grid-template-columns: 1fr;
-    }
+      section {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
 
-    .modal-content {
-        margin: 1rem;
-        padding: 1rem;
-    }
+      section h2 {
+        padding: 1.5rem;
+        margin: 0;
+        border-bottom: 2px solid #f1f1f1;
+        color: #2c3e50;
+      }
 
-    /* Stack form elements on mobile */
-    td {
-        min-width: 100px;
-    }
+      .retake-section {
+        border: 2px solid #ff9800;
+      }
 
-    td:last-child {
-        min-width: 70px;
-    }
+      .retake-section h2 {
+        color: #ff9800;
+      }
 
-    .remove-button {
-        padding: 0.4rem;
-        font-size: 0.8rem;
-    }
+      .grade-inputs {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+      }
 
-    /* Adjust button sizes for mobile */
-    .add-button {
+      .grade-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .grade-point {
+        width: 80px;
+        padding: 0.25rem;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+      }
+
+      th,
+      td {
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .results {
+        background-color: #f8f9fa;
+      }
+
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem;
+        border-bottom: 1px solid #ddd;
+      }
+
+      /* Add these new styles for the modal */
+      .chart-button {
+        display: block;
+        margin: 0 auto 2rem;
+        background-color: #4caf50;
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .chart-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 500px;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+      }
+
+      .modal.show {
+        display: flex;
+        opacity: 1;
+      }
+
+      .modal.show .modal-content {
+        transform: translateY(0);
+      }
+
+      .grade-chart-table {
         width: 100%;
         margin: 1rem 0;
-        justify-content: center;
-    }
+        border-collapse: collapse;
+      }
 
-    /* Make dropdowns more touch-friendly */
-    select {
+      .grade-chart-table th,
+      .grade-chart-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .grade-chart-table th {
+        font-weight: bold;
+        border-bottom: 2px solid #333;
+      }
+
+      .close-button {
+        display: block;
+        margin: 1rem auto 0;
+        padding: 0.5rem 2rem;
+        background-color: #007bff;
+      }
+
+      /* Updated and new styles */
+      .add-button {
+        margin: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+      }
+
+      .retake-button {
+        background-color: #ff9800;
+      }
+
+      .retake-button:hover {
+        background-color: #f57c00;
+      }
+
+      .plus-icon {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      /* Results section styling */
+      .result-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        padding: 1.5rem;
+      }
+
+      .result-card {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .result-card h3 {
+        color: #666;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+      }
+
+      .result-card .value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      /* Input styling */
+      input[type="text"],
+      input[type="number"],
+      select {
         padding: 0.5rem;
-        font-size: 1rem;
-    }
-}
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 100%;
+      }
 
-/* Additional general styles */
-.table-responsive {
-    width: 100%;
-    margin-bottom: 1rem;
-}
+      select {
+        background-color: white;
+      }
 
-/* Style for course select */
-.course-select {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: white;
-}
+      /* Mobile responsiveness */
+      @media screen and (max-width: 768px) {
+        .container {
+          margin: 0;
+          padding: 1rem;
+          border-radius: 0;
+        }
 
-/* Add to your existing styles */
-:root {
-    /* Light theme colors */
-    --primary-color: #7c3aed;    /* Purple */
-    --secondary-color: #14b8a6;   /* Teal */
-    --danger-color: #ef4444;      /* Red */
-    --success-color: #22c55e;     /* Green */
-    --background-color: #f8f9fa;
-    --card-background: #ffffff;
-    --text-primary: #2b2d42;
-    --text-secondary: #6c757d;
-    --border-color: #eee;
-    --input-background: #f5f5f5;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-}
+        .table-responsive {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          margin: 0 -1rem;
+          padding: 0 1rem;
+        }
 
-[data-theme="dark"] {
-    /* Dark theme colors */
-    --primary-color: #a78bfa;     /* Light Purple */
-    --secondary-color: #2dd4bf;   /* Light Teal */
-    --danger-color: #f87171;      /* Light Red */
-    --success-color: #4ade80;     /* Light Green */
-    --background-color: #1a1b1e;
-    --card-background: #2a2b2e;
-    --text-primary: #ffffff;
-    --text-secondary: #9ca3af;
-    --border-color: #3f3f46;
-    --input-background: #3f3f46;
-    --shadow-color: rgba(0, 0, 0, 0.3);
-}
+        table {
+          font-size: 0.9rem;
+        }
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-primary);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+        th,
+        td {
+          padding: 0.5rem 0.25rem;
+        }
 
-.app-container {
-    max-width: 600px;
-    margin: 0 auto;
-    min-height: 100vh;
-    background: var(--background-color);
-    color: var(--text-primary);
-}
+        .result-cards {
+          grid-template-columns: 1fr;
+        }
 
-/* Header Styles */
-.app-header {
-    background: var(--card-background);
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
+        .modal-content {
+          margin: 1rem;
+          padding: 1rem;
+        }
 
-.title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
+        /* Stack form elements on mobile */
+        td {
+          min-width: 100px;
+        }
 
-.title i {
-    font-size: 1.6rem;  /* Match the size of header action icons */
-    opacity: 0.9;
-    margin-top: 2px;  /* Fine-tune vertical alignment */
-}
+        td:last-child {
+          min-width: 70px;
+        }
 
-.title h1 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-    line-height: 1;  /* Ensure text is centered */
-    padding-top: 4px;  /* Fine-tune vertical alignment */
-}
+        .remove-button {
+          padding: 0.4rem;
+          font-size: 0.8rem;
+        }
 
-/* Info Cards */
-.info-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    padding: 1rem;
-}
+        /* Adjust button sizes for mobile */
+        .add-button {
+          width: 100%;
+          margin: 1rem 0;
+          justify-content: center;
+        }
 
-.info-card {
-    background: transparent;
-}
+        /* Make dropdowns more touch-friendly */
+        select {
+          padding: 0.5rem;
+          font-size: 1rem;
+        }
+      }
 
-.card-content {
-    display: flex;
-    align-items: center;
-    background: transparent !important;
-    border: 1.5px solid var(--border-color);
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
-    transition: none;
-}
+      /* Additional general styles */
+      .table-responsive {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
 
-.card-content i {
-    font-size: 1.4rem;
-    color: var(--text-primary);
-    opacity: 0.7;
-    margin-right: 0.75rem;
-}
+      /* Style for course select */
+      .course-select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: white;
+      }
 
-.input-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
+      /* Add to your existing styles */
+      :root {
+        /* Light theme colors */
+        --primary-color: #7c3aed; /* Purple */
+        --secondary-color: #14b8a6; /* Teal */
+        --danger-color: #ef4444; /* Red */
+        --success-color: #22c55e; /* Green */
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2b2d42;
+        --text-secondary: #6c757d;
+        --border-color: #eee;
+        --input-background: #f5f5f5;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+      }
 
-.input-label {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-}
+      [data-theme="dark"] {
+        /* Dark theme colors */
+        --primary-color: #a78bfa; /* Light Purple */
+        --secondary-color: #2dd4bf; /* Light Teal */
+        --danger-color: #f87171; /* Light Red */
+        --success-color: #4ade80; /* Light Green */
+        --background-color: #1a1b1e;
+        --card-background: #2a2b2e;
+        --text-primary: #ffffff;
+        --text-secondary: #9ca3af;
+        --border-color: #3f3f46;
+        --input-background: #3f3f46;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+      }
 
-.card-content input {
-    background: transparent !important;
-    border: none;
-    outline: none;
-    font-size: 1.1rem;
-    font-weight: 500;
-    width: 100%;
-    color: var(--text-primary);
-    padding: 0;
-    transition: none;
-}
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-primary);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
 
-.card-content input::placeholder {
-    color: var(--text-secondary);
-    opacity: 0.6;
-}
+      .app-container {
+        max-width: 600px;
+        margin: 0 auto;
+        min-height: 100vh;
+        background: var(--background-color);
+        color: var(--text-primary);
+      }
 
-/* Update select wrapper and options styles */
-.select-wrapper {
-    position: relative;
-    text-align: center;
-    background: transparent !important;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transform: none !important;
-    transition: none !important;
-}
+      /* Header Styles */
+      .app-header {
+        background: var(--card-background);
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
 
-.select-wrapper i {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    opacity: 0.7;
-}
-
-.select-wrapper select {
-    width: 100%;
-    text-align: center;
-    text-align-last: center;
-    padding: 0.4rem;
-    font-size: 0.95rem;
-    font-weight: 500;
-    background: transparent !important;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    color: var(--text-primary);
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
-}
-
-/* Style for options */
-.select-wrapper select option {
-    text-align: center;
-    padding: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    background: var(--card-background) !important;
-}
-
-/* Remove custom arrow */
-.select-wrapper::after {
-    display: none;
-}
-
-/* Hover effects */
-.select-wrapper:hover {
-    border-color: var(--primary-color);
-    background: var(--background-hover) !important;
-}
-
-.select-wrapper:hover i {
-    opacity: 1;
-    color: var(--primary-color);
-}
-
-/* Grade colors */
-.grade option[value="A"] { color: #22c55e; }
-.grade option[value="A-"] { color: #16a34a; }
-.grade option[value="B+"] { color: #2563eb; }
-.grade option[value="B"] { color: #3b82f6; }
-.grade option[value="B-"] { color: #60a5fa; }
-.grade option[value="C+"] { color: #f59e0b; }
-.grade option[value="C"] { color: #d97706; }
-
-/* Credit colors */
-.credit-hours option[value="1"] { color: #8b5cf6; }
-.credit-hours option[value="2"] { color: #7c3aed; }
-.credit-hours option[value="3"] { color: #6d28d9; }
-.credit-hours option[value="4"] { color: #5b21b6; }
-
-/* Placeholder style */
-.select-wrapper select option[value=""][disabled] {
-    color: var(--text-secondary);
-    font-style: italic;
-}
-
-/* Dark mode adjustments */
-[data-theme="dark"] .select-wrapper:hover {
-    background: transparent !important;
-}
-
-/* Mobile adjustments */
-@media (max-width: 600px) {
-    .info-cards {
+      .title {
+        display: flex;
+        align-items: center;
         gap: 0.75rem;
-        padding: 0.75rem;
-    }
+      }
 
-    .card-content {
-        padding: 0.75rem;
-    }
+      .title i {
+        font-size: 1.6rem; /* Match the size of header action icons */
+        opacity: 0.9;
+        margin-top: 2px; /* Fine-tune vertical alignment */
+      }
 
-    .card-content input {
-        font-size: 1rem;
-    }
+      .title h1 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+        line-height: 1; /* Ensure text is centered */
+        padding-top: 4px; /* Fine-tune vertical alignment */
+      }
 
-    .select-wrapper {
+      /* Info Cards */
+      .info-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .info-card {
+        background: transparent;
+      }
+
+      .card-content {
+        display: flex;
+        align-items: center;
+        background: transparent !important;
+        border: 1.5px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        transition: none;
+      }
+
+      .card-content i {
+        font-size: 1.4rem;
+        color: var(--text-primary);
+        opacity: 0.7;
+        margin-right: 0.75rem;
+      }
+
+      .input-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .input-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      .card-content input {
+        background: transparent !important;
+        border: none;
+        outline: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        width: 100%;
+        color: var(--text-primary);
+        padding: 0;
+        transition: none;
+      }
+
+      .card-content input::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.6;
+      }
+
+      /* Update select wrapper and options styles */
+      .select-wrapper {
+        position: relative;
+        text-align: center;
+        background: transparent !important;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transform: none !important;
+        transition: none !important;
+      }
+
+      .select-wrapper i {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        opacity: 0.7;
+      }
+
+      .select-wrapper select {
+        width: 100%;
+        text-align: center;
+        text-align-last: center;
         padding: 0.4rem;
-    }
-    
-    .select-wrapper select {
-        font-size: 0.9rem;
-    }
-}
+        font-size: 0.95rem;
+        font-weight: 500;
+        background: transparent !important;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        color: var(--text-primary);
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
 
-/* Course Cards */
-.courses-section {
-    padding: 1rem;
-    padding-bottom: 80px; /* Space for floating buttons */
-}
+      /* Style for options */
+      .select-wrapper select option {
+        text-align: center;
+        padding: 8px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background: var(--card-background) !important;
+      }
 
-.course-card {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-}
+      /* Remove custom arrow */
+      .select-wrapper::after {
+        display: none;
+      }
 
-.course-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
+      /* Hover effects */
+      .select-wrapper:hover {
+        border-color: var(--primary-color);
+        background: var(--background-hover) !important;
+      }
 
-.course-header h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
+      .select-wrapper:hover i {
+        opacity: 1;
+        color: var(--primary-color);
+      }
 
-.delete-button {
-    background: transparent;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--danger-color);
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
-}
+      /* Grade colors */
+      .grade option[value="A"] {
+        color: #22c55e;
+      }
+      .grade option[value="A-"] {
+        color: #16a34a;
+      }
+      .grade option[value="B+"] {
+        color: #2563eb;
+      }
+      .grade option[value="B"] {
+        color: #3b82f6;
+      }
+      .grade option[value="B-"] {
+        color: #60a5fa;
+      }
+      .grade option[value="C+"] {
+        color: #f59e0b;
+      }
+      .grade option[value="C"] {
+        color: #d97706;
+      }
 
-.delete-button i {
-    font-size: 1.2rem;
-}
+      /* Credit colors */
+      .credit-hours option[value="1"] {
+        color: #8b5cf6;
+      }
+      .credit-hours option[value="2"] {
+        color: #7c3aed;
+      }
+      .credit-hours option[value="3"] {
+        color: #6d28d9;
+      }
+      .credit-hours option[value="4"] {
+        color: #5b21b6;
+      }
 
-.delete-button:hover {
-    opacity: 1;
-    background: transparent;
-}
+      /* Placeholder style */
+      .select-wrapper select option[value=""][disabled] {
+        color: var(--text-secondary);
+        font-style: italic;
+      }
 
-/* Dark mode adjustments for delete button */
-[data-theme="dark"] .delete-button {
-    color: var(--danger-color);
-}
+      /* Dark mode adjustments */
+      [data-theme="dark"] .select-wrapper:hover {
+        background: transparent !important;
+      }
 
-[data-theme="dark"] .delete-button:hover {
-    background: transparent;
-}
+      /* Mobile adjustments */
+      @media (max-width: 600px) {
+        .info-cards {
+          gap: 0.75rem;
+          padding: 0.75rem;
+        }
 
-/* Input field styles */
-.input-field {
-    margin-bottom: 0.5rem;
-}
+        .card-content {
+          padding: 0.75rem;
+        }
 
-.input-field label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    opacity: 0.8;
-}
+        .card-content input {
+          font-size: 1rem;
+        }
 
-.select-wrapper {
-    background: transparent;
-    border: 1px solid var(--border-color);
-}
+        .select-wrapper {
+          padding: 0.4rem;
+        }
 
-.select-wrapper:hover {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(139, 92, 246, 0.05));
-}
+        .select-wrapper select {
+          font-size: 0.9rem;
+        }
+      }
 
-.select-wrapper:focus-within {
-    border-color: #7c3aed;
-    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
-}
+      /* Course Cards */
+      .courses-section {
+        padding: 1rem;
+        padding-bottom: 80px; /* Space for floating buttons */
+      }
 
-.select-wrapper select {
-    background: transparent;
-    border: none;
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    width: 100%;
-    color: var(--text-primary);
-}
+      .course-card {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
 
-.select-wrapper select option {
-    background: var(--card-background);
-    color: var(--text-primary);
-}
+      .course-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
 
-/* Sliding Navbar-style FAB */
-.fab-container {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
+      .course-header h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
 
-.fab-actions {
-    position: fixed;
-    bottom: 5.5rem;
-    right: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-    background: var(--card-background);
-    padding: 0.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
+      .delete-button {
+        background: transparent;
+        border: none;
+        padding: 0.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--danger-color);
+        opacity: 0.7;
+        transition: opacity 0.2s ease;
+      }
 
-.fab-actions.active {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: all;
-}
+      .delete-button i {
+        font-size: 1.2rem;
+      }
 
-.fab {
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    border-radius: 28px;
-    height: 48px;
-    padding: 0 1.5rem;
-    cursor: pointer;
-    white-space: nowrap;
-}
+      .delete-button:hover {
+        opacity: 1;
+        background: transparent;
+      }
 
-.fab.primary {
-    background: var(--primary-color);
-    color: white;
-}
+      /* Dark mode adjustments for delete button */
+      [data-theme="dark"] .delete-button {
+        color: var(--danger-color);
+      }
 
-.fab.secondary {
-    background: var(--background-color);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-}
+      [data-theme="dark"] .delete-button:hover {
+        background: transparent;
+      }
 
-#mainFab {
-    width: 48px;
-    padding: 0;
-    transition: transform 0.3s ease;
-}
+      /* Input field styles */
+      .input-field {
+        margin-bottom: 0.5rem;
+      }
 
-.fab-container.active #mainFab {
-    transform: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
+      .input-field label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        opacity: 0.8;
+      }
 
+      .select-wrapper {
+        background: transparent;
+        border: 1px solid var(--border-color);
+      }
 
+      .select-wrapper:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.05),
+          rgba(139, 92, 246, 0.05)
+        );
+      }
 
+      .select-wrapper:focus-within {
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+      }
 
+      .select-wrapper select {
+        background: transparent;
+        border: none;
+        outline: none;
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        width: 100%;
+        color: var(--text-primary);
+      }
 
-/* Calculate fee */
-.fee-container {
-    max-width: 400px;
-    margin: auto;
-    padding: 10px;
-    
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-}
+      .select-wrapper select option {
+        background: var(--card-background);
+        color: var(--text-primary);
+      }
 
-.tuitionFee{
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
+      /* Sliding Navbar-style FAB */
+      .fab-container {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
 
-.waiverOrscholarship{
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
+      .fab-actions {
+        position: fixed;
+        bottom: 5.5rem;
+        right: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+        background: var(--card-background);
+        padding: 0.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
 
+      .fab-actions.active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+      }
 
-.in1 {
+      .fab {
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 28px;
+        height: 48px;
+        padding: 0 1.5rem;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .fab.primary {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .fab.secondary {
+        background: var(--background-color);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+      }
+
+      #mainFab {
+        width: 48px;
+        padding: 0;
+        transition: transform 0.3s ease;
+      }
+
+      .fab-container.active #mainFab {
+        transform: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Calculate fee */
+      .fee-container {
+        max-width: 400px;
+        margin: auto;
+        padding: 10px;
+
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .tuitionFee {
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+
+      .waiverOrscholarship {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      #installment1,#installment2,#installment3 {
     margin-top: 10px;
     padding: 5px;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 500;
     background: lightcyan;
     border-left: 5px solid #28a745;
     text-align: center;
 }
 #payableFee {
+    padding: 10px;
     margin-top: 10px;
     font-weight: bold;
-    font-size: 17px;
+    font-size: 13px;
     color: blueviolet;
     background: #ffe6e6;
     border-left: 5px solid blueviolet;
 }
 
+      /* Mobile adaptation */
+      @media (max-width: 600px) {
+        .h-cgpa {
+          font-size: 15px;
+        }
 
+        .fab-actions {
+          bottom: 5rem;
+          right: 0.5rem;
+          width: 160px;
+        }
 
+        .action-button span {
+          display: inline;
+        }
+      }
 
+      /* Bottom Actions */
+      .bottom-actions {
+        position: fixed;
+        bottom: 2rem;
+        left: 2rem;
+        right: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 90;
+        gap: 1rem;
+      }
 
-
-
-
-
-
-
-
-
-
-
-
-/* Mobile adaptation */
-@media (max-width: 600px) {
-
-    .h-cgpa{
-        font-size: 15px;
-    }
-    
-    .fab-actions {
-        bottom: 5rem;
-        right: 0.5rem;
-        width: 160px;
-    }
-    
-    .action-button span {
-        display: inline;
-    }
-}
-
-/* Bottom Actions */
-.bottom-actions {
-    position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    right: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 90;
-    gap: 1rem;
-}
-
-.action-button {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    justify-content: center;
-    text-align: center;
-}
-
-.action-button i {
-    display: none;
-}
-
-.menu {
-    background: var(--primary-color);
-    color: white;
-}
-
-.primary {
-    background: var(--primary-color);
-    color: white;
-}
-
-.secondary {
-    background: var(--background-color);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-}
-
-/* FAB Container */
-.fab-container {
-    position: static;
-    order: 3;
-}
-
-/* Mobile adaptation */
-@media (max-width: 600px) {
-    .bottom-actions {
-        left: 1rem;
-        right: 1rem;
-        bottom: 1rem;
-        gap: 0.5rem;
-    }
-    
-    .action-button {
-        min-width: auto;
-        padding: 0.75rem 1rem;
-        font-size: 0.85rem;
-        justify-content: center !important;
-    }
-    
-    .action-button span {
-        display: none;
-    }
-    
-    .fab-actions {
-        bottom: 4rem;
-        right: 0.5rem;
-    }
-}
-
-.calculate {
-    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
-}
-
-.reset {
-    background: linear-gradient(135deg, #ef4444, #f87171);
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
-}
-
-/* Retake Card Styles */
-.retake-card {
-    border: 2px solid #14b8a6;
-}
-
-.retake-card .course-header h3 {
-    color: #14b8a6;
-}
-
-.retake-card .select-wrapper:focus-within {
-    box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 600px) {
-    .info-cards {
-        grid-template-columns: 1fr;
-    }
-
-    .course-inputs {
-        grid-template-columns: 1fr;
-    }
-
-    .fab {
-        min-width: 100px;
-        height: 40px;
-        font-size: 0.85rem;
-    }
-
-    .result-item {
-        padding: 1rem;
-    }
-
-    .result-value {
-        font-size: 1.5rem;
-    }
-
-    .grade-chart-table th,
-    .grade-chart-table td {
-        padding: 0.75rem;
-        font-size: 0.9rem;
-    }
-
-    .courses-section {
-        padding: 0.75rem;
-        padding-bottom: 80px;
-    }
-
-    .course-card {
-        margin-bottom: 0.5rem;
-    }
-
-    .course-inputs {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .retake-card .course-inputs {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .input-field {
-        margin-bottom: 0;
-    }
-
-    .select-wrapper select {
-        padding: 0.25rem 0;
-    }
-
-    .bottom-actions {
-        bottom: 1rem;
-        left: 1rem;
-        flex-direction: column;
+      .action-button {
+        display: flex;
+        align-items: center;
         gap: 0.75rem;
-    }
-
-    .fab-container {
-        bottom: 1rem;
-        right: 1rem;
-    }
-
-    .action-button {
-        padding: 0.75rem;
-        font-size: 0.85rem;
-    }
-}
-
-/* Modal styles */
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--background-color);
-}
-
-.modal-header h2 {
-    margin: 0;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.close-modal {
-    color: var(--text-secondary);
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-}
-
-.close-modal:hover {
-    background-color: var(--background-color);
-}
-
-/* Results modal styles */
-.results-modal {
-    max-width: 400px;
-}
-
-.results-body {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.result-item {
-    background: var(--background-color);
-    padding: 1.5rem;
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.2s ease;
-    animation: scaleIn 0.3s ease-out;
-    animation-fill-mode: both;
-}
-
-.result-label {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.label-text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.label-text h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.label-text p {
-    margin: 0;
-    font-size: 0.85rem;
-    font-weight: 500;
-    opacity: 0.8;
-    color: var(--text-secondary);
-}
-
-.result-value {
-    font-size: 2.2rem;
-    font-weight: 700;
-}
-
-/* Grade chart modal styles */
-.grade-chart-modal {
-    max-width: 450px;
-}
-
-.grade-chart-content {
-    max-height: 70vh;
-    overflow-y: auto;
-}
-
-.grade-chart-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.grade-chart-table th,
-.grade-chart-table td {
-    padding: 1rem;
-    text-align: center;
-    border-bottom: 1px solid var(--background-color);
-}
-
-.grade-chart-table th {
-    background-color: var(--background-color);
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 1rem;
-}
-
-.grade-chart-table td {
-    color: var(--text-secondary);
-    font-weight: 500;
-    font-size: 0.95rem;
-}
-
-.grade-chart-table tr:hover td {
-    background-color: var(--background-color);
-}
-
-/* Toast styles */
-.toast {
-    position: fixed;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    z-index: 1000;
-    animation: slideUpFade 0.4s ease-out;
-    font-weight: 500;
-    font-size: 0.95rem;
-}
-
-.toast.error {
-    background-color: #fef2f2;
-    color: #ef4444;
-    border-left: 4px solid #ef4444;
-}
-
-.toast i {
-    color: var(--danger-color);
-}
-
-@keyframes slideUpFade {
-    from {
-        opacity: 0;
-        transform: translate(-50%, 30px);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
-}
-
-/* Input focus styles */
-input:focus, select:focus {
-    border-color: #7c3aed;
-    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
-}
-
-.error input, .error select {
-    border-color: #ef4444;
-    background-color: #fef2f2;
-}
-
-/* Update validation modal styles */
-.validation-modal {
-    max-width: 350px;
-}
-
-.validation-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1rem 0;
-}
-
-.validation-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 32px;
-    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
-.validation-icon i {
-    font-size: 32px;
-}
-
-.validation-message {
-    text-align: center;
-    color: var(--text-secondary);
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 500;
-    line-height: 1.5;
-}
-
-/* Responsive adjustments */
-@media (min-width: 768px) {
-    .course-inputs {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-    }
-
-    .input-field {
-        margin-bottom: 0;
-    }
-}
-
-/* Update course inputs grid */
-.course-inputs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 0.75rem;
-    padding: 1rem;
-    background: transparent !important;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-}
-
-.input-field {
-    margin: 0;
-}
-
-.input-field label {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 0.4rem;
-}
-
-/* Update retake card specific styles */
-.retake-card .course-inputs {
-    grid-template-columns: repeat(3, 1fr);
-}
-
-/* Add subtle text shadow for better contrast */
-.title h1,
-.course-header h3,
-.result-value,
-.modal-header h2 {
-    text-shadow: 0 1px 1px rgba(0,0,0,0.05);
-}
-
-/* Make icons more visible */
-.material-icons {
-    font-size: 1.3rem;
-    opacity: 0.9;
-}
-
-/* Update select placeholder color */
-select option[value=""][disabled] {
-    color: #999;
-}
-
-/* Add animation for course cards */
-.course-card {
-    animation: slideIn 0.3s ease-out;
-    transform-origin: top;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Update floating action buttons */
-.fab {
-    animation: fadeInUp 0.3s ease-out;
-    backdrop-filter: blur(8px);
-}
-
-.fab:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.05) contrast(1.1);
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Update action buttons */
-.action-button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.05) contrast(1.1);
-}
-
-/* Modal animations */
-.modal {
-    animation: fadeIn 0.3s ease-out;
-}
-
-.modal-content {
-    animation: slideDown 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Result items animation */
-.result-item:nth-child(1) { animation-delay: 0.1s; }
-.result-item:nth-child(2) { animation-delay: 0.2s; }
-.result-item:nth-child(3) { animation-delay: 0.3s; }
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Delete button animation */
-.delete-button {
-    color: var(--danger-color);
-    transition: all 0.2s ease;
-}
-
-.delete-button:hover {
-    background-color: rgba(239, 68, 68, 0.1);
-    transform: scale(1.1);
-}
-
-/* Input field animations */
-.select-wrapper {
-    transition: all 0.2s ease;
-}
-
-.select-wrapper:hover {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(139, 92, 246, 0.05));
-}
-
-.select-wrapper:focus-within {
-    background: white;
-    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
-}
-
-/* Info cards animation */
-.info-card {
-    animation: pulseIn 0.3s ease-out;
-}
-
-@keyframes pulseIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    70% {
-        transform: scale(1.03);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Grade chart table animation */
-.grade-chart-table tr {
-    animation: fadeInLeft 0.3s ease-out;
-    animation-fill-mode: both;
-}
-
-.grade-chart-table tr:nth-child(odd) { animation-delay: 0.1s; }
-.grade-chart-table tr:nth-child(even) { animation-delay: 0.2s; }
-
-@keyframes fadeInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-/* Add button active states */
-.fab:active, .action-button:active {
-    transform: translateY(1px);
-    filter: brightness(0.95);
-}
-
-/* Update existing styles to use new variables */
-.app-container {
-    background: var(--background-color);
-    color: var(--text-primary);
-}
-
-.course-card {
-    background: var(--card-background);
-    border-color: var(--border-color);
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.select-wrapper {
-    background: var(--input-background);
-    color: var(--text-primary);
-}
-
-.select-wrapper select {
-    color: var(--text-primary);
-}
-
-/* Update modal background for dark mode */
-.modal {
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-[data-theme="dark"] .modal-content {
-    background: var(--card-background);
-    border: 1px solid var(--border-color);
-}
-
-/* Update input styles for dark mode */
-[data-theme="dark"] input,
-[data-theme="dark"] select {
-    background-color: var(--input-background);
-    color: var(--text-primary);
-    border-color: var(--border-color);
-}
-
-/* Theme toggle button styles */
-.theme-toggle {
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.theme-toggle:hover {
-    transform: rotate(30deg);
-}
-
-/* Course card adjustments */
-.course-card {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-}
-
-.course-inputs {
-    background: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 0.75rem;
-}
-
-.retake-card .course-inputs {
-    border-color: #14b8a6;
-}
-
-/* Input icons */
-.card-content i,
-.select-wrapper i {
-    opacity: 0.6;
-    transition: opacity 0.2s ease;
-}
-
-.card-content:focus-within i,
-.select-wrapper:focus-within i {
-    opacity: 1;
-    color: #7c3aed;
-}
-
-/* Hover effects */
-.card-content:hover,
-.select-wrapper:hover {
-    border-color: #7c3aed;
-}
-
-.card-content:hover i,
-.select-wrapper:hover i {
-    opacity: 0.8;
-}
-
-/* Dark mode specific adjustments */
-[data-theme="dark"] .select-wrapper {
-    background: transparent;
-}
-
-[data-theme="dark"] .select-wrapper:hover,
-[data-theme="dark"] .select-wrapper:focus-within {
-    background: transparent !important;
-}
-
-[data-theme="dark"] .card-content {
-    background: transparent !important;
-}
-
-[data-theme="dark"] .card-content:focus-within {
-    background: transparent !important;
-}
-
-[data-theme="dark"] .card-content input {
-    color: var(--text-primary);
-}
-
-/* Update header action buttons */
-.header-actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.icon-button {
-    background: transparent;
-    border: none;
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.icon-button i {
-    font-size: 1.6rem;
-    opacity: 0.8;
-    transition: all 0.2s ease;
-}
-
-.icon-button:hover i {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-.icon-button:active i {
-    transform: scale(0.95);
-}
-
-/* Dark mode adjustments */
-[data-theme="dark"] .icon-button {
-    color: var(--text-primary);
-}
-
-[data-theme="dark"] .icon-button:hover {
-    background: transparent;
-}
-
-/* Style for credit options */
-.credit-hours option {
-    padding: 10px;
-    font-size: 0.95rem;
-    font-weight: 500;
-}
-
-/* Credit value colors */
-.credit-hours option[value="1"] { color: #8b5cf6; }  /* Light Purple */
-.credit-hours option[value="2"] { color: #7c3aed; }  /* Medium Purple */
-.credit-hours option[value="3"] { color: #6d28d9; }  /* Dark Purple */
-.credit-hours option[value="4"] { color: #5b21b6; }  /* Deeper Purple */
-
-/* Dark mode credit colors */
-[data-theme="dark"] .credit-hours option[value="1"] { color: #a78bfa; }
-[data-theme="dark"] .credit-hours option[value="2"] { color: #9333ea; }
-[data-theme="dark"] .credit-hours option[value="3"] { color: #7c3aed; }
-[data-theme="dark"] .credit-hours option[value="4"] { color: #6d28d9; }
-
-/* Remove the pulse animation and simplify select styles */
-.select-wrapper {
-    position: relative;
-    text-align: center;
-    background: transparent !important;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transform: none !important;
-    transition: none !important;
-}
-
-.select-wrapper select {
-    width: 100%;
-    text-align: center;
-    text-align-last: center;
-    padding: 0.4rem;
-    font-size: 0.95rem;
-    font-weight: 500;
-    background: transparent !important;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    color: var(--text-primary);
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
-}
-
-/* Style for options */
-.select-wrapper select option {
-    text-align: center;
-    padding: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    background: var(--card-background) !important;
-}
-
-/* Remove animations */
-.select-wrapper select:focus {
-    animation: none;  /* Remove pulse animation */
-}
-
-/* Remove the gradient animation */
-.select-wrapper::before {
-    display: none;  /* Remove gradient effect */
-}
-
-/* Keep simple hover effect */
-.select-wrapper:hover {
-    border-color: var(--primary-color);
-}
-
-/* Remove all animations and transitions */
-.select-wrapper,
-.select-wrapper select,
-.select-wrapper select option {
-    transition: none;
-    animation: none;
-    transform: none;
-}
-
-/* Remove any transform effects */
-.select-wrapper:active,
-.select-wrapper:focus,
-.select-wrapper select:active,
-.select-wrapper select:focus {
-    transform: none;
-}
-
-/* Remove any transition delays */
-.credit-hours option,
-.grade option {
-    transition: none;
-}
-
-/* Developer modal styles */
-.developer-modal {
-    max-width: 400px;
-}
-
-.developer-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1rem 0;
-    gap: 1rem;
-}
-
-.developer-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 32px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
-.developer-icon i {
-    font-size: 32px;
-}
-
-.developer-body h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-}
-
-.version {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin: 0;
-}
-
-.developer-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.developer-info p {
-    margin: 0;
-    color: var(--text-primary);
-}
-
-.social-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.social-links a {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    background: var(--background-color);
-    color: var(--text-primary);
-    text-decoration: none;
-    transition: transform 0.2s ease;
-}
-
-.social-links a:hover {
-    transform: translateY(-2px);
-}
-
-/* Main Footer */
-.main-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0.75rem 1rem;
-    background: var(--card-background);
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-    z-index: 100;
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.footer-actions {
-    display: flex;
-    gap: 1.5rem;
-}
-
-/* FAB adjustments */
-.fab-container {
-    position: relative;
-}
-
-/* Mobile adaptation */
-@media (max-width: 600px) {
-    .main-footer {
-        padding: 0.75rem;
-    }
-    
-    .footer-actions {
-        gap: 1rem;
-    }
-    
-    .action-button {
-        padding: 0.75rem 1.2rem;
-        font-size: 0.85rem;
-    }
-    
-    .fab-actions {
-        bottom: 4.5rem;
-        right: 0.5rem;
-    }
-}
-
-.action-button.primary, 
-.action-button.secondary {
-    width: 100%;
-    justify-content: flex-start;
-}
-
-.button-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1.3;
-}
-
-.button-text small {
-    font-size: 0.75rem;
-    opacity: 0.8;
-    font-weight: 400;
-    color: inherit;
-}
-
-/* Mobile adaptation */
-@media (max-width: 600px) {
-    .button-text small {
+        padding: 0.75rem 1.5rem;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .action-button i {
         display: none;
-    }
-}
+      }
 
-/* Mobile adaptation */
-@media (max-width: 600px) {
-    .action-button i {
-        font-size: 1.1rem;
-    }
-    
-    .action-button span {
-        display: inline !important;  /* Force show text */
-    }
-    
-    .action-button {
-        padding: 0.75rem 1rem;  /* Adjust padding */
-        font-size: 0.85rem;
-    }
-    
-    .button-text small {
-        display: none;  /* Keep small text hidden */
-    }
-    
-    .fab-actions {
-        width: 180px;  /* Increase width */
-    }
-}
+      .menu {
+        background: var(--primary-color);
+        color: white;
+      }
 
-/* Remove icon styles */
-.action-button i {
-    display: none;
-}
+      .primary {
+        background: var(--primary-color);
+        color: white;
+      }
 
-/* Adjust menu button padding */
-.action-button.menu {
-    padding: 0.75rem 1.5rem;
-}
+      .secondary {
+        background: var(--background-color);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+      }
 
-/* Mobile adaptation */
-@media (max-width: 600px) {
-    .action-button.menu {
-        padding: 0.75rem 1rem;
-    }
-}
+      /* FAB Container */
+      .fab-container {
+        position: static;
+        order: 3;
+      }
 
-/* Remove icon from menu button */
-#mainFab i {
-    display: none;
-}
+      /* Mobile adaptation */
+      @media (max-width: 600px) {
+        .bottom-actions {
+          left: 1rem;
+          right: 1rem;
+          bottom: 1rem;
+          gap: 0.5rem;
+        }
 
-/* Add text styling */
-#mainFab span {
-    display: inline !important;
-}
+        .action-button {
+          min-width: auto;
+          padding: 0.75rem 1rem;
+          font-size: 0.85rem;
+          justify-content: center !important;
+        }
 
-/* Adjust padding */
-.action-button.menu {
-    padding: 0.75rem 1.5rem;
-}
+        .action-button span {
+          display: none;
+        }
 
-/* Mobile adaptation */
-@media (max-width: 600px) {
-    .action-button.menu {
-        padding: 0.75rem 1rem;
-    }
-}
+        .fab-actions {
+          bottom: 4rem;
+          right: 0.5rem;
+        }
+      }
 
-/* Center align button content */
-.action-button {
-    justify-content: center;
-    text-align: center;
-}
+      .calculate {
+        background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
+      }
 
-.button-text {
-    align-items: center;
-    text-align: center;
-}
+      .reset {
+        background: linear-gradient(135deg, #ef4444, #f87171);
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+      }
 
-.button-text span,
-.button-text small {
-    width: 100%;
-    text-align: center;
-}
+      /* Retake Card Styles */
+      .retake-card {
+        border: 2px solid #14b8a6;
+      }
 
-/* Mobile adaptation */
-@media (max-width: 600px) {
-    .action-button {
-        justify-content: center !important;
-    }
-}
+      .retake-card .course-header h3 {
+        color: #14b8a6;
+      }
 
-/* Header */
-.app-header h1 {
-    font-weight: 700 !important;
-    font-size: 1.5rem;
-}
+      .retake-card .select-wrapper:focus-within {
+        box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
+      }
 
-/* Info Cards */
-.input-label {
-    font-weight: 600 !important;
-    font-size: 0.95rem;
-}
+      /* Responsive Adjustments */
+      @media (max-width: 600px) {
+        .info-cards {
+          grid-template-columns: 1fr;
+        }
 
-.card-content input {
-    font-weight: 600 !important;
-    font-size: 1.2rem;
-}
+        .course-inputs {
+          grid-template-columns: 1fr;
+        }
 
-/* Buttons */
-.action-button {
-    font-weight: 600 !important;
-}
+        .fab {
+          min-width: 100px;
+          height: 40px;
+          font-size: 0.85rem;
+        }
 
-/* Modal Headers */
-.modal-header h2 {
-    font-weight: 700 !important;
-    font-size: 1.4rem;
-}
+        .result-item {
+          padding: 1rem;
+        }
 
-/* Results Display */
-.result-value {
-    font-weight: 700 !important;
-    font-size: 1.3rem;
-}
+        .result-value {
+          font-size: 1.5rem;
+        }
 
-/* Course Cards */
-.course-header h3 {
-    font-weight: 600 !important;
-    font-size: 1.1rem;
-}
+        .grade-chart-table th,
+        .grade-chart-table td {
+          padding: 0.75rem;
+          font-size: 0.9rem;
+        }
 
-/* Grade Chart Table */
-.grade-chart-table th {
-    font-weight: 700 !important;
-}
+        .courses-section {
+          padding: 0.75rem;
+          padding-bottom: 80px;
+        }
 
-.grade-chart-table td {
-    font-weight: 600 !important;
-}
+        .course-card {
+          margin-bottom: 0.5rem;
+        }
 
-/* Form Elements */
-.select-wrapper select {
-    font-weight: 600 !important;
-}
+        .course-inputs {
+          grid-template-columns: repeat(2, 1fr);
+        }
 
-/* Footer Text */
-.main-footer .action-button {
-    font-weight: 600 !important;
-}
+        .retake-card .course-inputs {
+          grid-template-columns: repeat(3, 1fr);
+        }
 
-/* Mobile Adaptation */
-@media (max-width: 600px) {
-    .app-header h1 {
+        .input-field {
+          margin-bottom: 0;
+        }
+
+        .select-wrapper select {
+          padding: 0.25rem 0;
+        }
+
+        .bottom-actions {
+          bottom: 1rem;
+          left: 1rem;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .fab-container {
+          bottom: 1rem;
+          right: 1rem;
+        }
+
+        .action-button {
+          padding: 0.75rem;
+          font-size: 0.85rem;
+        }
+      }
+
+      /* Modal styles */
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--background-color);
+      }
+
+      .modal-header h2 {
+        margin: 0;
         font-size: 1.3rem;
-    }
-    
-    .card-content input {
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .close-modal {
+        color: var(--text-secondary);
+        padding: 0.5rem;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+      }
+
+      .close-modal:hover {
+        background-color: var(--background-color);
+      }
+
+      /* Results modal styles */
+      .results-modal {
+        max-width: 400px;
+      }
+
+      .results-body {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .result-item {
+        background: var(--background-color);
+        padding: 1.5rem;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s ease;
+        animation: scaleIn 0.3s ease-out;
+        animation-fill-mode: both;
+      }
+
+      .result-label {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .label-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .label-text h3 {
+        margin: 0;
         font-size: 1.1rem;
-    }
-    
-    .action-button {
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .label-text p {
+        margin: 0;
+        font-size: 0.85rem;
+        font-weight: 500;
+        opacity: 0.8;
+        color: var(--text-secondary);
+      }
+
+      .result-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+      }
+
+      /* Grade chart modal styles */
+      .grade-chart-modal {
+        max-width: 450px;
+      }
+
+      .grade-chart-content {
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+
+      .grade-chart-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .grade-chart-table th,
+      .grade-chart-table td {
+        padding: 1rem;
+        text-align: center;
+        border-bottom: 1px solid var(--background-color);
+      }
+
+      .grade-chart-table th {
+        background-color: var(--background-color);
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 1rem;
+      }
+
+      .grade-chart-table td {
+        color: var(--text-secondary);
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+
+      .grade-chart-table tr:hover td {
+        background-color: var(--background-color);
+      }
+
+      /* Toast styles */
+      .toast {
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        z-index: 1000;
+        animation: slideUpFade 0.4s ease-out;
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+
+      .toast.error {
+        background-color: #fef2f2;
+        color: #ef4444;
+        border-left: 4px solid #ef4444;
+      }
+
+      .toast i {
+        color: var(--danger-color);
+      }
+
+      @keyframes slideUpFade {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 30px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      /* Input focus styles */
+      input:focus,
+      select:focus {
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+      }
+
+      .error input,
+      .error select {
+        border-color: #ef4444;
+        background-color: #fef2f2;
+      }
+
+      /* Update validation modal styles */
+      .validation-modal {
+        max-width: 350px;
+      }
+
+      .validation-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1rem 0;
+      }
+
+      .validation-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 32px;
+        background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+
+      .validation-icon i {
+        font-size: 32px;
+      }
+
+      .validation-message {
+        text-align: center;
+        color: var(--text-secondary);
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 500;
+        line-height: 1.5;
+      }
+
+      /* Responsive adjustments */
+      @media (min-width: 768px) {
+        .course-inputs {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1rem;
+        }
+
+        .input-field {
+          margin-bottom: 0;
+        }
+      }
+
+      /* Update course inputs grid */
+      .course-inputs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.75rem;
+        padding: 1rem;
+        background: transparent !important;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+      }
+
+      .input-field {
+        margin: 0;
+      }
+
+      .input-field label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 0.4rem;
+      }
+
+      /* Update retake card specific styles */
+      .retake-card .course-inputs {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      /* Add subtle text shadow for better contrast */
+      .title h1,
+      .course-header h3,
+      .result-value,
+      .modal-header h2 {
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Make icons more visible */
+      .material-icons {
+        font-size: 1.3rem;
+        opacity: 0.9;
+      }
+
+      /* Update select placeholder color */
+      select option[value=""][disabled] {
+        color: #999;
+      }
+
+      /* Add animation for course cards */
+      .course-card {
+        animation: slideIn 0.3s ease-out;
+        transform-origin: top;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Update floating action buttons */
+      .fab {
+        animation: fadeInUp 0.3s ease-out;
+        backdrop-filter: blur(8px);
+      }
+
+      .fab:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.05) contrast(1.1);
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Update action buttons */
+      .action-button:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.05) contrast(1.1);
+      }
+
+      /* Modal animations */
+      .modal {
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      .modal-content {
+        animation: slideDown 0.3s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Result items animation */
+      .result-item:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .result-item:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .result-item:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Delete button animation */
+      .delete-button {
+        color: var(--danger-color);
+        transition: all 0.2s ease;
+      }
+
+      .delete-button:hover {
+        background-color: rgba(239, 68, 68, 0.1);
+        transform: scale(1.1);
+      }
+
+      /* Input field animations */
+      .select-wrapper {
+        transition: all 0.2s ease;
+      }
+
+      .select-wrapper:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.05),
+          rgba(139, 92, 246, 0.05)
+        );
+      }
+
+      .select-wrapper:focus-within {
+        background: white;
+        box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+      }
+
+      /* Info cards animation */
+      .info-card {
+        animation: pulseIn 0.3s ease-out;
+      }
+
+      @keyframes pulseIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        70% {
+          transform: scale(1.03);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Grade chart table animation */
+      .grade-chart-table tr {
+        animation: fadeInLeft 0.3s ease-out;
+        animation-fill-mode: both;
+      }
+
+      .grade-chart-table tr:nth-child(odd) {
+        animation-delay: 0.1s;
+      }
+      .grade-chart-table tr:nth-child(even) {
+        animation-delay: 0.2s;
+      }
+
+      @keyframes fadeInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Add button active states */
+      .fab:active,
+      .action-button:active {
+        transform: translateY(1px);
+        filter: brightness(0.95);
+      }
+
+      /* Update existing styles to use new variables */
+      .app-container {
+        background: var(--background-color);
+        color: var(--text-primary);
+      }
+
+      .course-card {
+        background: var(--card-background);
+        border-color: var(--border-color);
+        box-shadow: 0 2px 4px var(--shadow-color);
+      }
+
+      .select-wrapper {
+        background: var(--input-background);
+        color: var(--text-primary);
+      }
+
+      .select-wrapper select {
+        color: var(--text-primary);
+      }
+
+      /* Update modal background for dark mode */
+      .modal {
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+
+      [data-theme="dark"] .modal-content {
+        background: var(--card-background);
+        border: 1px solid var(--border-color);
+      }
+
+      /* Update input styles for dark mode */
+      [data-theme="dark"] input,
+      [data-theme="dark"] select {
+        background-color: var(--input-background);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+      }
+
+      /* Theme toggle button styles */
+      .theme-toggle {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .theme-toggle:hover {
+        transform: rotate(30deg);
+      }
+
+      /* Course card adjustments */
+      .course-card {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+
+      .course-inputs {
+        background: var(--card-background);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 0.75rem;
+      }
+
+      .retake-card .course-inputs {
+        border-color: #14b8a6;
+      }
+
+      /* Input icons */
+      .card-content i,
+      .select-wrapper i {
+        opacity: 0.6;
+        transition: opacity 0.2s ease;
+      }
+
+      .card-content:focus-within i,
+      .select-wrapper:focus-within i {
+        opacity: 1;
+        color: #7c3aed;
+      }
+
+      /* Hover effects */
+      .card-content:hover,
+      .select-wrapper:hover {
+        border-color: #7c3aed;
+      }
+
+      .card-content:hover i,
+      .select-wrapper:hover i {
+        opacity: 0.8;
+      }
+
+      /* Dark mode specific adjustments */
+      [data-theme="dark"] .select-wrapper {
+        background: transparent;
+      }
+
+      [data-theme="dark"] .select-wrapper:hover,
+      [data-theme="dark"] .select-wrapper:focus-within {
+        background: transparent !important;
+      }
+
+      [data-theme="dark"] .card-content {
+        background: transparent !important;
+      }
+
+      [data-theme="dark"] .card-content:focus-within {
+        background: transparent !important;
+      }
+
+      [data-theme="dark"] .card-content input {
+        color: var(--text-primary);
+      }
+
+      /* Update header action buttons */
+      .header-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .icon-button {
+        background: transparent;
+        border: none;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .icon-button i {
+        font-size: 1.6rem;
+        opacity: 0.8;
+        transition: all 0.2s ease;
+      }
+
+      .icon-button:hover i {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+
+      .icon-button:active i {
+        transform: scale(0.95);
+      }
+
+      /* Dark mode adjustments */
+      [data-theme="dark"] .icon-button {
+        color: var(--text-primary);
+      }
+
+      [data-theme="dark"] .icon-button:hover {
+        background: transparent;
+      }
+
+      /* Style for credit options */
+      .credit-hours option {
+        padding: 10px;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      /* Credit value colors */
+      .credit-hours option[value="1"] {
+        color: #8b5cf6;
+      } /* Light Purple */
+      .credit-hours option[value="2"] {
+        color: #7c3aed;
+      } /* Medium Purple */
+      .credit-hours option[value="3"] {
+        color: #6d28d9;
+      } /* Dark Purple */
+      .credit-hours option[value="4"] {
+        color: #5b21b6;
+      } /* Deeper Purple */
+
+      /* Dark mode credit colors */
+      [data-theme="dark"] .credit-hours option[value="1"] {
+        color: #a78bfa;
+      }
+      [data-theme="dark"] .credit-hours option[value="2"] {
+        color: #9333ea;
+      }
+      [data-theme="dark"] .credit-hours option[value="3"] {
+        color: #7c3aed;
+      }
+      [data-theme="dark"] .credit-hours option[value="4"] {
+        color: #6d28d9;
+      }
+
+      /* Remove the pulse animation and simplify select styles */
+      .select-wrapper {
+        position: relative;
+        text-align: center;
+        background: transparent !important;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transform: none !important;
+        transition: none !important;
+      }
+
+      .select-wrapper select {
+        width: 100%;
+        text-align: center;
+        text-align-last: center;
+        padding: 0.4rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background: transparent !important;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        color: var(--text-primary);
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
+
+      /* Style for options */
+      .select-wrapper select option {
+        text-align: center;
+        padding: 8px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background: var(--card-background) !important;
+      }
+
+      /* Remove animations */
+      .select-wrapper select:focus {
+        animation: none; /* Remove pulse animation */
+      }
+
+      /* Remove the gradient animation */
+      .select-wrapper::before {
+        display: none; /* Remove gradient effect */
+      }
+
+      /* Keep simple hover effect */
+      .select-wrapper:hover {
+        border-color: var(--primary-color);
+      }
+
+      /* Remove all animations and transitions */
+      .select-wrapper,
+      .select-wrapper select,
+      .select-wrapper select option {
+        transition: none;
+        animation: none;
+        transform: none;
+      }
+
+      /* Remove any transform effects */
+      .select-wrapper:active,
+      .select-wrapper:focus,
+      .select-wrapper select:active,
+      .select-wrapper select:focus {
+        transform: none;
+      }
+
+      /* Remove any transition delays */
+      .credit-hours option,
+      .grade option {
+        transition: none;
+      }
+
+      /* Developer modal styles */
+      .developer-modal {
+        max-width: 400px;
+      }
+
+      .developer-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1rem 0;
+        gap: 1rem;
+      }
+
+      .developer-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 32px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+
+      .developer-icon i {
+        font-size: 32px;
+      }
+
+      .developer-body h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .version {
+        color: var(--text-secondary);
         font-size: 0.9rem;
-    }
-} 
+        margin: 0;
+      }
+
+      .developer-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .developer-info p {
+        margin: 0;
+        color: var(--text-primary);
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .social-links a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        background: var(--background-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: transform 0.2s ease;
+      }
+
+      .social-links a:hover {
+        transform: translateY(-2px);
+      }
+
+      /* Main Footer */
+      .main-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0.75rem 1rem;
+        background: var(--card-background);
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer-actions {
+        display: flex;
+        gap: 1.5rem;
+      }
+
+      /* FAB adjustments */
+      .fab-container {
+        position: relative;
+      }
+
+      /* Mobile adaptation */
+      @media (max-width: 600px) {
+        .main-footer {
+          padding: 0.75rem;
+        }
+
+        .footer-actions {
+          gap: 1rem;
+        }
+
+        .action-button {
+          padding: 0.75rem 1.2rem;
+          font-size: 0.85rem;
+        }
+
+        .fab-actions {
+          bottom: 4.5rem;
+          right: 0.5rem;
+        }
+      }
+
+      .action-button.primary,
+      .action-button.secondary {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .button-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1.3;
+      }
+
+      .button-text small {
+        font-size: 0.75rem;
+        opacity: 0.8;
+        font-weight: 400;
+        color: inherit;
+      }
+
+      /* Mobile adaptation */
+      @media (max-width: 600px) {
+        .button-text small {
+          display: none;
+        }
+      }
+
+      /* Mobile adaptation */
+      @media (max-width: 600px) {
+        .action-button i {
+          font-size: 1.1rem;
+        }
+
+        .action-button span {
+          display: inline !important; /* Force show text */
+        }
+
+        .action-button {
+          padding: 0.75rem 1rem; /* Adjust padding */
+          font-size: 0.85rem;
+        }
+
+        .button-text small {
+          display: none; /* Keep small text hidden */
+        }
+
+        .fab-actions {
+          width: 180px; /* Increase width */
+        }
+      }
+
+      /* Remove icon styles */
+      .action-button i {
+        display: none;
+      }
+
+      /* Adjust menu button padding */
+      .action-button.menu {
+        padding: 0.75rem 1.5rem;
+      }
+
+      /* Mobile adaptation */
+      @media (max-width: 600px) {
+        .action-button.menu {
+          padding: 0.75rem 1rem;
+        }
+      }
+
+      /* Remove icon from menu button */
+      #mainFab i {
+        display: none;
+      }
+
+      /* Add text styling */
+      #mainFab span {
+        display: inline !important;
+      }
+
+      /* Adjust padding */
+      .action-button.menu {
+        padding: 0.75rem 1.5rem;
+      }
+
+      /* Mobile adaptation */
+      @media (max-width: 600px) {
+        .action-button.menu {
+          padding: 0.75rem 1rem;
+        }
+      }
+
+      /* Center align button content */
+      .action-button {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .button-text {
+        align-items: center;
+        text-align: center;
+      }
+
+      .button-text span,
+      .button-text small {
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Mobile adaptation */
+      @media (max-width: 600px) {
+        .action-button {
+          justify-content: center !important;
+        }
+      }
+
+      /* Header */
+      .app-header h1 {
+        font-weight: 700 !important;
+        font-size: 1.5rem;
+      }
+
+      /* Info Cards */
+      .input-label {
+        font-weight: 600 !important;
+        font-size: 0.95rem;
+      }
+
+      .card-content input {
+        font-weight: 600 !important;
+        font-size: 1.2rem;
+      }
+
+      /* Buttons */
+      .action-button {
+        font-weight: 600 !important;
+      }
+
+      /* Modal Headers */
+      .modal-header h2 {
+        font-weight: 700 !important;
+        font-size: 1.4rem;
+      }
+
+      /* Results Display */
+      .result-value {
+        font-weight: 700 !important;
+        font-size: 1.3rem;
+      }
+
+      /* Course Cards */
+      .course-header h3 {
+        font-weight: 600 !important;
+        font-size: 1.1rem;
+      }
+
+      /* Grade Chart Table */
+      .grade-chart-table th {
+        font-weight: 700 !important;
+      }
+
+      .grade-chart-table td {
+        font-weight: 600 !important;
+      }
+
+      /* Form Elements */
+      .select-wrapper select {
+        font-weight: 600 !important;
+      }
+
+      /* Footer Text */
+      .main-footer .action-button {
+        font-weight: 600 !important;
+      }
+
+      /* Mobile Adaptation */
+      @media (max-width: 600px) {
+        .app-header h1 {
+          font-size: 1.3rem;
+        }
+
+        .card-content input {
+          font-size: 1.1rem;
+        }
+
+        .action-button {
+          font-size: 0.9rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -2012,7 +2057,6 @@ select option[value=""][disabled] {
         <div class="title">
           <i class="material-icons">school</i>
           <h2 class="h-cgpa">CGPA Calculator</h2>
-          
         </div>
         <div class="header-actions">
           <button class="icon-button" onclick="calculator.showGradeChart()">
@@ -2255,7 +2299,7 @@ select option[value=""][disabled] {
               <p>Contact: touhid435r@gmail.com</p>
             </div>
             <div class="social-links">
-              <a href="https://github.com/Riyadh435" target="_blank">
+              <a href="https://github.com/touhid404" target="_blank">
                 <i class="material-icons">link</i>
                 GitHub
               </a>
@@ -2301,11 +2345,12 @@ select option[value=""][disabled] {
 
               <button onclick="calculateTutionFee()">Calculate</button>
 
-              
               <p class="resultm" id="payableFee"></p>
-              <h3 class="in1" id="installment1"></h3>
-              <h3 class="in1" id="installment2"></h3>
-              <h3 class="in1" id="installment3"></h3>
+
+              <p class="in1" id="installment1"></p>
+              
+              <p class="in1" id="installment2"></p>
+              <p class="in1" id="installment3"></p>
             </div>
           </div>
         </div>
@@ -2344,123 +2389,158 @@ select option[value=""][disabled] {
       </footer>
     </div>
     <script>
-        class CGPACalculator {
-    constructor() {
-        this.gradeChart = {
-            "A": 4.00,
+      class CGPACalculator {
+        constructor() {
+          this.gradeChart = {
+            A: 4.0,
             "A-": 3.67,
             "B+": 3.33,
-            "B": 3.00,
+            B: 3.0,
             "B-": 2.67,
             "C+": 2.33,
-            "C": 2.00,
+            C: 2.0,
             "C-": 1.67,
             "D+": 1.33,
-            "D": 1.00,
-            "F": 0.00
-        };
-        
-        // Add course list
-        this.courseList = [
-            'Course 1', 'Course 2', 'Course 3', 'Course 4',
-            'Course 5', 'Course 6', 'Course 7', 'Course 8',
-            'Course 9', 'Course 10', 'Course 11', 'Course 12'
-        ];
+            D: 1.0,
+            F: 0.0,
+          };
 
-        this.validationModal = document.getElementById('validationModal');
-        this.developerModal = document.getElementById('developerModal');
-        this.FeeCalModal = document.getElementById('FeeCalModal');
-        this.initializeUI();
-        this.initializeModalCloseButtons();
-        this.initializeTheme();
-        this.courseRegistry = new Map(); // Tracks latest course attempts
-        this.initializeFAB();
-    }
+          // Add course list
+          this.courseList = [
+            "Course 1",
+            "Course 2",
+            "Course 3",
+            "Course 4",
+            "Course 5",
+            "Course 6",
+            "Course 7",
+            "Course 8",
+            "Course 9",
+            "Course 10",
+            "Course 11",
+            "Course 12",
+          ];
 
-    initializeUI() {
-        this.completedCredits = document.getElementById('completedCredits');
-        this.currentCGPA = document.getElementById('currentCGPA');
-        this.resultsModal = document.getElementById('resultsModal');
-        this.gradeChartModal = document.getElementById('gradeChartModal');
-        
-        // Initialize event listeners
-        document.getElementById('addCourse').addEventListener('click', () => this.addCourseRow());
-        document.getElementById('addRetake').addEventListener('click', () => this.addRetakeRow());
-        document.getElementById('calculateButton').addEventListener('click', () => this.calculateFinalCGPA());
-        document.getElementById('resetButton').addEventListener('click', () => this.resetCalculator());
+          this.validationModal = document.getElementById("validationModal");
+          this.developerModal = document.getElementById("developerModal");
+          this.FeeCalModal = document.getElementById("FeeCalModal");
+          this.initializeUI();
+          this.initializeModalCloseButtons();
+          this.initializeTheme();
+          this.courseRegistry = new Map(); // Tracks latest course attempts
+          this.initializeFAB();
+        }
 
-        // Add modal close button listeners
-        document.querySelectorAll('.modal .close-button').forEach(button => {
-            button.addEventListener('click', () => {
-                this.resultsModal.classList.remove('show');
-                this.gradeChartModal.classList.remove('show');
+        initializeUI() {
+          this.completedCredits = document.getElementById("completedCredits");
+          this.currentCGPA = document.getElementById("currentCGPA");
+          this.resultsModal = document.getElementById("resultsModal");
+          this.gradeChartModal = document.getElementById("gradeChartModal");
+
+          // Initialize event listeners
+          document
+            .getElementById("addCourse")
+            .addEventListener("click", () => this.addCourseRow());
+          document
+            .getElementById("addRetake")
+            .addEventListener("click", () => this.addRetakeRow());
+          document
+            .getElementById("calculateButton")
+            .addEventListener("click", () => this.calculateFinalCGPA());
+          document
+            .getElementById("resetButton")
+            .addEventListener("click", () => this.resetCalculator());
+
+          // Add modal close button listeners
+          document
+            .querySelectorAll(".modal .close-button")
+            .forEach((button) => {
+              button.addEventListener("click", () => {
+                this.resultsModal.classList.remove("show");
+                this.gradeChartModal.classList.remove("show");
+              });
             });
-        });
 
-        // Close modals when clicking outside
-        [this.resultsModal, this.gradeChartModal].forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.remove('show');
-                }
+          // Close modals when clicking outside
+          [this.resultsModal, this.gradeChartModal].forEach((modal) => {
+            modal.addEventListener("click", (e) => {
+              if (e.target === modal) {
+                modal.classList.remove("show");
+              }
             });
-        });
-    }
+          });
+        }
 
-    initializeModalCloseButtons() {
-        // Close buttons in modals
-        document.querySelectorAll('.close-modal').forEach(button => {
-            button.addEventListener('click', () => {
-                const modal = button.closest('.modal');
-                modal.classList.remove('show');
+        initializeModalCloseButtons() {
+          // Close buttons in modals
+          document.querySelectorAll(".close-modal").forEach((button) => {
+            button.addEventListener("click", () => {
+              const modal = button.closest(".modal");
+              modal.classList.remove("show");
             });
-        });
+          });
 
-        // Close modal when clicking outside
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.remove('show');
-                }
+          // Close modal when clicking outside
+          document.querySelectorAll(".modal").forEach((modal) => {
+            modal.addEventListener("click", (e) => {
+              if (e.target === modal) {
+                modal.classList.remove("show");
+              }
             });
-        });
-    }
+          });
+        }
 
-    initializeTheme() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        
-        const themeIcon = document.querySelector('.theme-toggle');
-        themeIcon.textContent = savedTheme === 'dark' ? 'light_mode' : 'dark_mode';
+        initializeTheme() {
+          const savedTheme = localStorage.getItem("theme") || "light";
+          document.documentElement.setAttribute("data-theme", savedTheme);
 
-        // Add theme toggle listener
-        document.querySelector('.theme-toggle').parentElement.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            // Update icon
-            themeIcon.textContent = newTheme === 'dark' ? 'light_mode' : 'dark_mode';
-        });
-    }
+          const themeIcon = document.querySelector(".theme-toggle");
+          themeIcon.textContent =
+            savedTheme === "dark" ? "light_mode" : "dark_mode";
 
-    addCourseRow() {
-        const courseCard = document.createElement('div');
-        courseCard.className = 'course-card';
-        
-        const courseNumber = document.querySelectorAll('.course-card').length + 1;
-        
-        const gradeOptions = Object.entries(this.gradeChart).map(([grade, points]) => 
-            `<option value="${grade}">${grade} (${points.toFixed(2)})</option>`
-        ).join('');
+          // Add theme toggle listener
+          document
+            .querySelector(".theme-toggle")
+            .parentElement.addEventListener("click", () => {
+              const currentTheme =
+                document.documentElement.getAttribute("data-theme");
+              const newTheme = currentTheme === "dark" ? "light" : "dark";
 
-        const creditOptions = [1,2,3,4].map(num => 
-            `<option value="${num}">${num} Credit${num > 1 ? 's' : ''}</option>`
-        ).join('');
+              document.documentElement.setAttribute("data-theme", newTheme);
+              localStorage.setItem("theme", newTheme);
 
-        courseCard.innerHTML = `
+              // Update icon
+              themeIcon.textContent =
+                newTheme === "dark" ? "light_mode" : "dark_mode";
+            });
+        }
+
+        addCourseRow() {
+          const courseCard = document.createElement("div");
+          courseCard.className = "course-card";
+
+          const courseNumber =
+            document.querySelectorAll(".course-card").length + 1;
+
+          const gradeOptions = Object.entries(this.gradeChart)
+            .map(
+              ([grade, points]) =>
+                `<option value="${grade}">${grade} (${points.toFixed(
+                  2
+                )})</option>`
+            )
+            .join("");
+
+          const creditOptions = [1, 2, 3, 4]
+            .map(
+              (num) =>
+                `<option value="${num}">${num} Credit${
+                  num > 1 ? "s" : ""
+                }</option>`
+            )
+            .join("");
+
+          courseCard.innerHTML = `
             <div class="course-header">
                 <h3>Course ${courseNumber}</h3>
                 <button class="delete-button" onclick="calculator.removeCourse(this)">
@@ -2491,24 +2571,35 @@ select option[value=""][disabled] {
             </div>
         `;
 
-        document.getElementById('coursesList').appendChild(courseCard);
-    }
+          document.getElementById("coursesList").appendChild(courseCard);
+        }
 
-    addRetakeRow() {
-        const courseCard = document.createElement('div');
-        courseCard.className = 'course-card retake-card';
-        
-        const courseNumber = document.querySelectorAll('.course-card').length + 1;
-        
-        const gradeOptions = Object.entries(this.gradeChart).map(([grade, points]) => 
-            `<option value="${grade}">${grade} (${points.toFixed(2)})</option>`
-        ).join('');
+        addRetakeRow() {
+          const courseCard = document.createElement("div");
+          courseCard.className = "course-card retake-card";
 
-        const creditOptions = [1,2,3,4].map(num => 
-            `<option value="${num}">${num} Credit${num > 1 ? 's' : ''}</option>`
-        ).join('');
+          const courseNumber =
+            document.querySelectorAll(".course-card").length + 1;
 
-        courseCard.innerHTML = `
+          const gradeOptions = Object.entries(this.gradeChart)
+            .map(
+              ([grade, points]) =>
+                `<option value="${grade}">${grade} (${points.toFixed(
+                  2
+                )})</option>`
+            )
+            .join("");
+
+          const creditOptions = [1, 2, 3, 4]
+            .map(
+              (num) =>
+                `<option value="${num}">${num} Credit${
+                  num > 1 ? "s" : ""
+                }</option>`
+            )
+            .join("");
+
+          courseCard.innerHTML = `
             <div class="course-header">
                 <h3>Retake ${courseNumber}</h3>
                 <button class="delete-button" onclick="calculator.removeCourse(this)">
@@ -2549,290 +2640,310 @@ select option[value=""][disabled] {
             </div>
         `;
 
-        document.getElementById('coursesList').appendChild(courseCard);
-    }
+          document.getElementById("coursesList").appendChild(courseCard);
+        }
 
-    removeCourse(button) {
-        const courseCard = button.closest('.course-card');
-        courseCard.remove();
-        
-        // Renumber remaining courses
-        document.querySelectorAll('.course-card').forEach((card, index) => {
-            card.querySelector('h3').textContent = `Course ${index + 1}`;
-        });
-    }
+        removeCourse(button) {
+          const courseCard = button.closest(".course-card");
+          courseCard.remove();
 
-    validateInitialInputs() {
-        if (!this.completedCredits.value || !this.currentCGPA.value) {
+          // Renumber remaining courses
+          document.querySelectorAll(".course-card").forEach((card, index) => {
+            card.querySelector("h3").textContent = `Course ${index + 1}`;
+          });
+        }
+
+        validateInitialInputs() {
+          if (!this.completedCredits.value || !this.currentCGPA.value) {
             // Show validation modal
-            this.validationModal.classList.add('show');
+            this.validationModal.classList.add("show");
             return false;
+          }
+          return true;
         }
-        return true;
-    }
 
-    closeValidationModal() {
-        this.validationModal.classList.remove('show');
-        // Focus on the first empty input
-        if (!this.completedCredits.value) {
+        closeValidationModal() {
+          this.validationModal.classList.remove("show");
+          // Focus on the first empty input
+          if (!this.completedCredits.value) {
             this.completedCredits.focus();
-        } else if (!this.currentCGPA.value) {
+          } else if (!this.currentCGPA.value) {
             this.currentCGPA.focus();
+          }
         }
-    }
 
-    validateInputs() {
-        let isValid = true;
-        let message = '';
+        validateInputs() {
+          let isValid = true;
+          let message = "";
 
-        // Validate completed credits and current CGPA
-        if (!this.completedCredits.value && !this.currentCGPA.value) {
+          // Validate completed credits and current CGPA
+          if (!this.completedCredits.value && !this.currentCGPA.value) {
             // Both empty is fine - new student
-        } else {
+          } else {
             if (!this.completedCredits.value) {
-                message = 'Please enter completed credits';
-                this.completedCredits.focus();
-                isValid = false;
+              message = "Please enter completed credits";
+              this.completedCredits.focus();
+              isValid = false;
             } else if (!this.currentCGPA.value) {
-                message = 'Please enter current CGPA';
-                this.currentCGPA.focus();
-                isValid = false;
+              message = "Please enter current CGPA";
+              this.currentCGPA.focus();
+              isValid = false;
             }
-        }
+          }
 
-        // Validate if there are any courses added
-        const courses = document.querySelectorAll('.course-card');
-        if (courses.length === 0) {
-            message = 'Please add at least one course';
+          // Validate if there are any courses added
+          const courses = document.querySelectorAll(".course-card");
+          if (courses.length === 0) {
+            message = "Please add at least one course";
             isValid = false;
-        } else {
+          } else {
             // Validate each course's inputs
             courses.forEach((card, index) => {
-                const creditHours = card.querySelector('.credit-hours').value;
-                const grade = card.querySelector('.grade')?.value || 
-                            card.querySelector('.new-grade')?.value;
+              const creditHours = card.querySelector(".credit-hours").value;
+              const grade =
+                card.querySelector(".grade")?.value ||
+                card.querySelector(".new-grade")?.value;
 
-                if (!creditHours) {
-                    message = `Please enter credit hours for Course ${index + 1}`;
-                    isValid = false;
-                }
-                if (!grade) {
-                    message = `Please select grade for Course ${index + 1}`;
-                    isValid = false;
-                }
+              if (!creditHours) {
+                message = `Please enter credit hours for Course ${index + 1}`;
+                isValid = false;
+              }
+              if (!grade) {
+                message = `Please select grade for Course ${index + 1}`;
+                isValid = false;
+              }
             });
-        }
+          }
 
-        if (!isValid) {
+          if (!isValid) {
             this.showError(message);
+          }
+
+          return isValid;
         }
 
-        return isValid;
-    }
-
-    showError(message) {
-        // Create and show error toast
-        const toast = document.createElement('div');
-        toast.className = 'toast error';
-        toast.innerHTML = `
+        showError(message) {
+          // Create and show error toast
+          const toast = document.createElement("div");
+          toast.className = "toast error";
+          toast.innerHTML = `
             <i class="material-icons">error</i>
             <span>${message}</span>
         `;
-        document.body.appendChild(toast);
+          document.body.appendChild(toast);
 
-        // Remove toast after 3 seconds
-        setTimeout(() => {
+          // Remove toast after 3 seconds
+          setTimeout(() => {
             toast.remove();
-        }, 3000);
-    }
-
-    calculateFinalCGPA() {
-        // Check initial inputs first
-        if (!this.validateInitialInputs()) {
-            return;
+          }, 3000);
         }
 
-        if (!this.validateInputs()) {
+        calculateFinalCGPA() {
+          // Check initial inputs first
+          if (!this.validateInitialInputs()) {
             return;
-        }
+          }
 
-        const previousCredits = parseFloat(this.completedCredits.value) || 0;
-        const previousCGPA = parseFloat(this.currentCGPA.value) || 0;
-        const previousPoints = previousCredits * previousCGPA;
+          if (!this.validateInputs()) {
+            return;
+          }
 
-        let currentPoints = 0;       // For current GPA calculation
-        let cgpaPoints = 0;          // For final CGPA calculation
-        let gpaCredits = 0;          // Credits affecting current GPA
-        let totalCredits = previousCredits; // Total completed credits
+          const previousCredits = parseFloat(this.completedCredits.value) || 0;
+          const previousCGPA = parseFloat(this.currentCGPA.value) || 0;
+          const previousPoints = previousCredits * previousCGPA;
 
-        document.querySelectorAll('.course-card').forEach(card => {
-            const creditHours = parseFloat(card.querySelector('.credit-hours').value) || 0;
-            const isRetake = card.classList.contains('retake-card');
+          let currentPoints = 0; // For current GPA calculation
+          let cgpaPoints = 0; // For final CGPA calculation
+          let gpaCredits = 0; // Credits affecting current GPA
+          let totalCredits = previousCredits; // Total completed credits
+
+          document.querySelectorAll(".course-card").forEach((card) => {
+            const creditHours =
+              parseFloat(card.querySelector(".credit-hours").value) || 0;
+            const isRetake = card.classList.contains("retake-card");
 
             if (isRetake) {
-                const previousGrade = card.querySelector('.previous-grade').value;
-                const newGrade = card.querySelector('.new-grade').value;
-                
-                // For current GPA: use full new grade
-                const newGradePoints = this.gradeChart[newGrade] * creditHours;
-                currentPoints += newGradePoints;
-                
-                // For final CGPA: only grade improvement
-                const gradeDiff = this.gradeChart[newGrade] - this.gradeChart[previousGrade];
-                cgpaPoints += gradeDiff * creditHours;
-                
-                gpaCredits += creditHours;
+              const previousGrade = card.querySelector(".previous-grade").value;
+              const newGrade = card.querySelector(".new-grade").value;
+
+              // For current GPA: use full new grade
+              const newGradePoints = this.gradeChart[newGrade] * creditHours;
+              currentPoints += newGradePoints;
+
+              // For final CGPA: only grade improvement
+              const gradeDiff =
+                this.gradeChart[newGrade] - this.gradeChart[previousGrade];
+              cgpaPoints += gradeDiff * creditHours;
+
+              gpaCredits += creditHours;
             } else {
-                const grade = card.querySelector('.grade').value;
-                const gradePoints = this.gradeChart[grade] * creditHours;
-                
-                currentPoints += gradePoints;
-                cgpaPoints += gradePoints;
-                gpaCredits += creditHours;
-                totalCredits += creditHours;
+              const grade = card.querySelector(".grade").value;
+              const gradePoints = this.gradeChart[grade] * creditHours;
+
+              currentPoints += gradePoints;
+              cgpaPoints += gradePoints;
+              gpaCredits += creditHours;
+              totalCredits += creditHours;
             }
-        });
+          });
 
-        // Calculate GPAs
-        const totalPoints = previousPoints + cgpaPoints;
-        const currentGPA = gpaCredits > 0 ? (currentPoints / gpaCredits).toFixed(2) : "0.00";
-        const finalCGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
+          // Calculate GPAs
+          const totalPoints = previousPoints + cgpaPoints;
+          const currentGPA =
+            gpaCredits > 0 ? (currentPoints / gpaCredits).toFixed(2) : "0.00";
+          const finalCGPA =
+            totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
 
-        // Update display
-        document.getElementById('currentGPA').textContent = currentGPA;
-        document.getElementById('cgpa').textContent = finalCGPA;
-        document.getElementById('totalCredits').textContent = totalCredits;
-        document.getElementById('gpaCredits').textContent = gpaCredits;
-        this.resultsModal.classList.add('show');
-        
-        // Animate values
-        this.animateValue('currentGPA', currentGPA);
-        this.animateValue('cgpa', finalCGPA);
-        this.animateValue('totalCredits', totalCredits);
-    }
+          // Update display
+          document.getElementById("currentGPA").textContent = currentGPA;
+          document.getElementById("cgpa").textContent = finalCGPA;
+          document.getElementById("totalCredits").textContent = totalCredits;
+          document.getElementById("gpaCredits").textContent = gpaCredits;
+          this.resultsModal.classList.add("show");
 
-    showGradeChart() {
-        this.gradeChartModal.classList.add('show');
-    }
+          // Animate values
+          this.animateValue("currentGPA", currentGPA);
+          this.animateValue("cgpa", finalCGPA);
+          this.animateValue("totalCredits", totalCredits);
+        }
 
-    showDeveloperInfo() {
-        this.developerModal.classList.add('show');
-    }
-    showFeeCalInfo() {
-        this.FeeCalModal.classList.add('show');
-    }
+        showGradeChart() {
+          this.gradeChartModal.classList.add("show");
+        }
 
-    animateValue(elementId, final) {
-        const element = document.getElementById(elementId);
-        const start = parseFloat(element.textContent);
-        const duration = 1000;
-        const steps = 60;
-        const increment = (final - start) / steps;
-        
-        let current = start;
-        const timer = setInterval(() => {
+        showDeveloperInfo() {
+          this.developerModal.classList.add("show");
+        }
+        showFeeCalInfo() {
+          this.FeeCalModal.classList.add("show");
+        }
+
+        animateValue(elementId, final) {
+          const element = document.getElementById(elementId);
+          const start = parseFloat(element.textContent);
+          const duration = 1000;
+          const steps = 60;
+          const increment = (final - start) / steps;
+
+          let current = start;
+          const timer = setInterval(() => {
             current += increment;
-            if ((increment >= 0 && current >= final) || 
-                (increment < 0 && current <= final)) {
-                clearInterval(timer);
-                element.textContent = final;
+            if (
+              (increment >= 0 && current >= final) ||
+              (increment < 0 && current <= final)
+            ) {
+              clearInterval(timer);
+              element.textContent = final;
             } else {
-                element.textContent = current.toFixed(2);
+              element.textContent = current.toFixed(2);
             }
-        }, duration / steps);
-    }
+          }, duration / steps);
+        }
 
-    resetCalculator() {
-        this.completedCredits.value = '';
-        this.currentCGPA.value = '';
-        document.getElementById('coursesList').innerHTML = '';
-        this.resultsModal.classList.remove('show');
-        document.getElementById('currentGPA').textContent = '0.00';
-        document.getElementById('cgpa').textContent = '0.00';
-        document.getElementById('totalCredits').textContent = '0';
-        document.getElementById('gpaCredits').textContent = '0';
-    }
+        resetCalculator() {
+          this.completedCredits.value = "";
+          this.currentCGPA.value = "";
+          document.getElementById("coursesList").innerHTML = "";
+          this.resultsModal.classList.remove("show");
+          document.getElementById("currentGPA").textContent = "0.00";
+          document.getElementById("cgpa").textContent = "0.00";
+          document.getElementById("totalCredits").textContent = "0";
+          document.getElementById("gpaCredits").textContent = "0";
+        }
 
-    addCourse(courseElement) {
-        const courseName = courseElement.dataset.courseName;
-        const isRetake = courseElement.classList.contains('retake');
-        
-        // Store only the latest attempt for each course
-        this.courseRegistry.set(courseName, {
-            credit: parseFloat(courseElement.querySelector('.credit-hours').value),
-            grade: courseElement.querySelector('.grade').value,
-            isRetake
-        });
-    }
+        addCourse(courseElement) {
+          const courseName = courseElement.dataset.courseName;
+          const isRetake = courseElement.classList.contains("retake");
 
-    calculateCGPA() {
-        let totalPoints = 0;
-        let totalCredits = 0;
+          // Store only the latest attempt for each course
+          this.courseRegistry.set(courseName, {
+            credit: parseFloat(
+              courseElement.querySelector(".credit-hours").value
+            ),
+            grade: courseElement.querySelector(".grade").value,
+            isRetake,
+          });
+        }
 
-        this.courseRegistry.forEach(course => {
+        calculateCGPA() {
+          let totalPoints = 0;
+          let totalCredits = 0;
+
+          this.courseRegistry.forEach((course) => {
             const gradePoint = this.gradeChart[course.grade];
             totalPoints += gradePoint * course.credit;
             totalCredits += course.credit;
-        });
+          });
 
-        return totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
-    }
+          return totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
+        }
 
-    initializeFAB() {
-        const mainFab = document.getElementById('mainFab');
-        const fabActions = document.querySelector('.fab-actions');
-        
-        mainFab.addEventListener('click', (e) => {
+        initializeFAB() {
+          const mainFab = document.getElementById("mainFab");
+          const fabActions = document.querySelector(".fab-actions");
+
+          mainFab.addEventListener("click", (e) => {
             e.stopPropagation();
-            fabActions.classList.toggle('active');
-        });
-        
-        document.addEventListener('click', (e) => {
+            fabActions.classList.toggle("active");
+          });
+
+          document.addEventListener("click", (e) => {
             if (!mainFab.contains(e.target) && !fabActions.contains(e.target)) {
-                fabActions.classList.remove('active');
+              fabActions.classList.remove("active");
             }
-        });
-    }
-}
+          });
+        }
+      }
 
-// Initialize the calculator when the document is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.calculator = new CGPACalculator();
-}); 
+      // Initialize the calculator when the document is loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        window.calculator = new CGPACalculator();
+      });
 
+      function calculateTutionFee() {
+        let tuitionFee = parseFloat(
+          document.getElementById("tuitionFee").value
+        );
+        let waiverPercentage = parseFloat(
+          document.getElementById("waiverOrscholarship").value
+        );
+        let trimesterFee = 5000; // Fixed trimester fee
 
+        if (isNaN(tuitionFee) || tuitionFee <= trimesterFee) {
+          alert(
+            "Please enter a valid tuition fee (must be greater than 5000 tk)."
+          );
+          return;
+        }
 
+        // Step 1: Deduct trimester fee (no waiver on this)
+        let remainingAmount = tuitionFee - trimesterFee;
 
+        // Step 2: Apply the selected waiver on the remaining amount (if any)
+        let waiverAmount = (remainingAmount * waiverPercentage) / 100;
+        let finalPayableFee = remainingAmount - waiverAmount + trimesterFee; // Add trimester fee back
 
-function calculateTutionFee() {
-    let tuitionFee = parseFloat(document.getElementById("tuitionFee").value);
-    let waiverPercentage = parseFloat(document.getElementById("waiverOrscholarship").value);
-    let trimesterFee = 5000; // Fixed trimester fee
+        document.getElementById(
+          "payableFee"
+        ).innerText = `Total Payable Fee after ${waiverPercentage}% Waiver: ${finalPayableFee.toFixed(
+          2
+        )} tk`;
 
-    if (isNaN(tuitionFee) || tuitionFee <= trimesterFee) {
-        alert("Please enter a valid tuition fee (must be greater than 5000 tk).");
-        return;
-    }
+        // Step 3: Calculate installments (40%, 30%, 30% of the final payable fee)
+        let installment1 = (finalPayableFee * 40) / 100;
+        let installment2 = (finalPayableFee * 30) / 100;
+        let installment3 = (finalPayableFee * 30) / 100;
 
-    // Step 1: Deduct trimester fee (no waiver on this)
-    let remainingAmount = tuitionFee - trimesterFee;
-    
-
-    // Step 2: Apply the selected waiver on the remaining amount (if any)
-    let waiverAmount = (remainingAmount * waiverPercentage) / 100;
-    let finalPayableFee = remainingAmount - waiverAmount + trimesterFee; // Add trimester fee back
-
-    document.getElementById("payableFee").innerText = `Total Payable Fee after ${waiverPercentage}% Waiver: ${finalPayableFee.toFixed(2)} tk`;
-
-    // Step 3: Calculate installments (40%, 30%, 30% of the final payable fee)
-    let installment1 = (finalPayableFee * 40) / 100;
-    let installment2 = (finalPayableFee * 30) / 100;
-    let installment3 = (finalPayableFee * 30) / 100;
-
-    document.getElementById("installment1").innerText = `1st Installment (40%): ${installment1.toFixed(2)} tk`;
-    document.getElementById("installment2").innerText = `2nd Installment (30%): ${installment2.toFixed(2)} tk`;
-    document.getElementById("installment3").innerText = `3rd Installment (30%): ${installment3.toFixed(2)} tk`;
-}
+        document.getElementById(
+          "installment1"
+        ).innerText = `1st Installment (40%): ${installment1.toFixed(2)} tk`;
+        document.getElementById(
+          "installment2"
+        ).innerText = `2nd Installment (30%): ${installment2.toFixed(2)} tk`;
+        document.getElementById(
+          "installment3"
+        ).innerText = `3rd Installment (30%): ${installment3.toFixed(2)} tk`;
+      }
     </script>
   </body>
 </html>

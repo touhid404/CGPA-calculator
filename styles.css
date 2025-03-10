@@ -769,19 +769,20 @@ body {
 }
 
 
-.in1 {
+#installment1,#installment2,#installment3 {
     margin-top: 10px;
     padding: 5px;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 500;
     background: lightcyan;
     border-left: 5px solid #28a745;
     text-align: center;
 }
 #payableFee {
+    padding: 10px;
     margin-top: 10px;
     font-weight: bold;
-    font-size: 17px;
+    font-size: 13px;
     color: blueviolet;
     background: #ffe6e6;
     border-left: 5px solid blueviolet;
