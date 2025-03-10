@@ -804,6 +804,11 @@ body {
 
 /* Mobile adaptation */
 @media (max-width: 600px) {
+
+    .h-cgpa{
+        font-size: 15px;
+    }
+    
     .fab-actions {
         bottom: 5rem;
         right: 0.5rem;
