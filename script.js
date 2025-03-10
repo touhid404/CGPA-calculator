@@ -471,19 +471,29 @@ function calculateTutionFee() {
     // Step 1: Deduct trimester fee (no waiver on this)
     let remainingAmount = tuitionFee - trimesterFee;
     
-
-    // Step 2: Apply the selected waiver on the remaining amount (if any)
+    // Step 2: Apply waiver to the remaining tuition fee
     let waiverAmount = (remainingAmount * waiverPercentage) / 100;
     let finalPayableFee = remainingAmount - waiverAmount + trimesterFee; // Add trimester fee back
 
     document.getElementById("payableFee").innerText = `Total Payable Fee after ${waiverPercentage}% Waiver: ${finalPayableFee.toFixed(2)} tk`;
 
-    // Step 3: Calculate installments (40%, 30%, 30% of the final payable fee)
-    let installment1 = (finalPayableFee * 40) / 100;
-    let installment2 = (finalPayableFee * 30) / 100;
-    let installment3 = (finalPayableFee * 30) / 100;
+    // Step 3: Calculate installments with waiver logic
+    let installment1, installment2, installment3;
 
-    document.getElementById("installment1").innerText = `1st Installment (40%): ${installment1.toFixed(2)} tk`;
-    document.getElementById("installment2").innerText = `2nd Installment (30%): ${installment2.toFixed(2)} tk`;
-    document.getElementById("installment3").innerText = `3rd Installment (30%): ${installment3.toFixed(2)} tk`;
+    if (waiverPercentage >= 40) {
+        // If waiver is greater than or equal to 40%, 1st installment is fully covered
+        installment1 = 0;
+        let remainingPercentage = 70 - waiverPercentage; // Remaining percentage to pay after 1st installment
+        installment2 = (finalPayableFee * remainingPercentage) / 100;
+        installment3 = (finalPayableFee * 30) / 100;
+    } else {
+        // If waiver is less than 40%, subtract waiver from the 1st installment
+        installment1 = (finalPayableFee * (40 - waiverPercentage)) / 100;
+        installment2 = (finalPayableFee * 30) / 100;
+        installment3 = (finalPayableFee * 30) / 100;
+    }
+
+    document.getElementById("installment1").innerText = `1st Installment: ${installment1.toFixed(2)} tk`;
+    document.getElementById("installment2").innerText = `2nd Installment: ${installment2.toFixed(2)} tk`;
+    document.getElementById("installment3").innerText = `3rd Installment: ${installment3.toFixed(2)} tk`;
 }
