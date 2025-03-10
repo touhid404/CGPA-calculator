@@ -457,6 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
 function calculateTutionFee() {
     let tuitionFee = parseFloat(document.getElementById("tuitionFee").value);
     let waiverPercentage = parseFloat(document.getElementById("waiverOrscholarship").value);
@@ -469,11 +470,11 @@ function calculateTutionFee() {
 
     // Step 1: Deduct trimester fee (no waiver on this)
     let remainingAmount = tuitionFee - trimesterFee;
-   
+    
 
-    // Step 2: Apply the selected waiver on the remaining amount
+    // Step 2: Apply the selected waiver on the remaining amount (if any)
     let waiverAmount = (remainingAmount * waiverPercentage) / 100;
-    let finalPayableFee = remainingAmount - waiverAmount + trimesterFee; // Adding trimester fee back
+    let finalPayableFee = remainingAmount - waiverAmount + trimesterFee; // Add trimester fee back
 
     document.getElementById("payableFee").innerText = `Total Payable Fee after ${waiverPercentage}% Waiver: ${finalPayableFee.toFixed(2)} tk`;
 
@@ -483,6 +484,6 @@ function calculateTutionFee() {
     let installment3 = (finalPayableFee * 30) / 100;
 
     document.getElementById("installment1").innerText = `1st Installment (40%): ${installment1.toFixed(2)} tk`;
-    document.getElementById("installment2").innerText = `2nd Installment (30%): ৳${installment2.toFixed(2)} tk`;
-    document.getElementById("installment3").innerText = `3rd Installment (30%): ৳${installment3.toFixed(2)} tk`;
+    document.getElementById("installment2").innerText = `2nd Installment (30%): ${installment2.toFixed(2)} tk`;
+    document.getElementById("installment3").innerText = `3rd Installment (30%): ${installment3.toFixed(2)} tk`;
 }
