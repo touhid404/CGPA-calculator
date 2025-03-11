@@ -17,7 +17,6 @@
         <div class="title">
           <i class="material-icons">school</i>
           <h2 class="h-cgpa">CGPA Calculator</h2>
-          
         </div>
         <div class="header-actions">
           <button class="icon-button" onclick="calculator.showGradeChart()">
@@ -297,21 +296,33 @@
               <label for="waiverOrscholarship"
                 >Scholarship or Waiver (Percentage):</label
               >
-              <select id="waiverOrscholarship" class="waiverOrscholarship">
+              <select
+                id="waiverOrscholarship"
+                class="waiverOrscholarship"
+                onchange="toggleCustomInput()"
+              >
                 <option value="0">No waiver or Scholarship</option>
                 <option value="20">20%</option>
                 <option value="25">25%</option>
                 <option value="50">50%</option>
                 <option value="100">100%</option>
+                <option value="custom">Custom %</option>
               </select>
+              <input
+                type="number"
+                id="customWaiver"
+                class="customWaiver"
+                placeholder="Enter custom percentage"
+                
+                style="display: none; margin-bottom: 10px"
+              />
 
               <button onclick="calculateTutionFee()">Calculate</button>
 
-              
               <p class="resultm" id="payableFee"></p>
 
               <p class="in1" id="installment1"></p>
-              
+
               <p class="in1" id="installment2"></p>
               <p class="in1" id="installment3"></p>
             </div>
